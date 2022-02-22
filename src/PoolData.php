@@ -11,29 +11,41 @@ use ThemePlate\Cache;
 
 class PoolData
 {
-    private string $id;
+    private int $postId;
     private int $expiration = 5;
 
-    public function __construct(string $id)
+    public function __construct(int $postId)
     {
-        $this->id = $id;
+        $this->postId = $postId;
     }
 
     public function toArray()
     {
         return Cache::remember(
-            'cp_stake_pool_' . $this->id,
-            [$this, 'getDetails'],
+            'cp_stake_pool_' . $this->postId,
+            [$this, 'getAll'],
             $this->expiration * MINUTE_IN_SECONDS
         );
     }
 
-    public function getDetails()
+    public function getInfo(): array
     {
-        $network = get_post_meta($this->id, 'pool_network', true);
-        $blockfrost = new Blockfrost($network);
-        $poolId = get_post_meta($this->id, 'pool_id', true);
+        $poolId = get_post_meta($this->postId, 'pool_id', true);
+        $network = get_post_meta($this->postId, 'pool_network', true);
 
-        return $blockfrost->getPoolInfo($poolId);
+        return (new Blockfrost($network))->getPoolInfo($poolId);
+    }
+
+    public function getDetails(): array
+    {
+        $poolId = get_post_meta($this->postId, 'pool_id', true);
+        $network = get_post_meta($this->postId, 'pool_network', true);
+
+        return (new Blockfrost($network))->getPoolDetails($poolId);
+    }
+
+    public function getAll(): array
+    {
+        return array_merge($this->getInfo(), $this->getDetails());
     }
 }

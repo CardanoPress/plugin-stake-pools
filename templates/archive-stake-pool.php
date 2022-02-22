@@ -21,12 +21,11 @@ get_header();
         the_post();
 
         $poolData = new PoolData(get_the_ID());
-        $poolDetails = $poolData->toArray();
         ?>
 
         <li>
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            <pre><?php print_r($poolDetails); ?></pre>
+            <pre><?php print_r($poolData->toArray()); ?></pre>
         </li>
     <?php endwhile; ?>
 </ul>

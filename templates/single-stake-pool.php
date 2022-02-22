@@ -20,13 +20,11 @@ get_header();
     the_post();
 
     $poolData = new PoolData(get_the_ID());
-    $poolDetails = $poolData->toArray();
     ?>
 
     <h2><?php the_title(); ?></h2>
 
-    <pre><?php print_r(get_post_meta(get_the_ID(), 'pool_data', true)); ?></pre>
-    <pre><?php print_r($poolDetails); ?></pre>
+    <pre><?php print_r($poolData->toArray()); ?></pre>
 <?php endwhile; ?>
 
 <?php
