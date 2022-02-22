@@ -29,6 +29,7 @@ class Application
         $this->setup();
 
         add_filter('update_post_metadata', [$this, 'getPoolDetails'], 10, 5);
+        add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
     }
 
     public function setup(): void
@@ -87,7 +88,6 @@ class Application
     protected function getPoolData()
     {
         $meta = get_post_meta($_REQUEST['post'] ?? get_the_ID(), 'pool_data', true) ?: [];
-        error_log(print_r($_REQUEST, true));
 
         ksort($meta);
         ob_start();
@@ -104,5 +104,37 @@ class Application
         <?php
 
         return ob_get_clean();
+    }
+
+    public function poolResetScript()
+    {
+        ob_start(); ?>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                var $poolId = $('#pool_id');
+                var $poolNetwork = $('#pool_network input');
+                var lastIdVal = $poolId.val();
+                var lastNetworkVal = $poolNetwork.filter(':checked').val();
+
+                $poolNetwork.on('change', function(e) {
+                    e.preventDefault();
+
+                    var currentIdValue = $poolId.val();
+                    var currentNetworkValue = $(e.currentTarget).val();
+
+                    if (currentNetworkValue === lastNetworkVal) {
+                        if (!currentIdValue) {
+                            $poolId.val(lastIdVal);
+                        }
+                    } else if (currentIdValue === lastIdVal) {
+                        $poolId.val('');
+                    }
+                })
+            })
+        </script>
+
+        <?php
+        echo wp_kses(ob_get_clean(), ['script' => []]);
     }
 }
