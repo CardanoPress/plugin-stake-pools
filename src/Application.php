@@ -30,6 +30,7 @@ class Application
 
         add_filter('update_post_metadata', [$this, 'getPoolDetails'], 10, 5);
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
+        add_filter('template_include', [$this, 'templateLoader']);
     }
 
     public function setup(): void
@@ -112,23 +113,23 @@ class Application
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
-                var $poolId = $('#pool_id');
-                var $poolNetwork = $('#pool_network input');
-                var lastIdVal = $poolId.val();
-                var lastNetworkVal = $poolNetwork.filter(':checked').val();
+                var $poolId = $('#pool_id')
+                var $poolNetwork = $('#pool_network input')
+                var lastIdVal = $poolId.val()
+                var lastNetworkVal = $poolNetwork.filter(':checked').val()
 
                 $poolNetwork.on('change', function(e) {
-                    e.preventDefault();
+                    e.preventDefault()
 
-                    var currentIdValue = $poolId.val();
-                    var currentNetworkValue = $(e.currentTarget).val();
+                    var currentIdValue = $poolId.val()
+                    var currentNetworkValue = $(e.currentTarget).val()
 
                     if (currentNetworkValue === lastNetworkVal) {
                         if (!currentIdValue) {
-                            $poolId.val(lastIdVal);
+                            $poolId.val(lastIdVal)
                         }
                     } else if (currentIdValue === lastIdVal) {
-                        $poolId.val('');
+                        $poolId.val('')
                     }
                 })
             })
@@ -136,5 +137,30 @@ class Application
 
         <?php
         echo wp_kses(ob_get_clean(), ['script' => []]);
+    }
+
+    public function templateLoader($template)
+    {
+        if (is_embed()) {
+            return $template;
+        }
+
+        if (is_singular('stake-pool')) {
+            $default = 'single-stake-pool.php';
+        } elseif (is_post_type_archive('stake-pool')) {
+            $default = 'archive-stake-pool.php';
+        } else {
+            $default = '';
+        }
+
+        if ($default) {
+            $template = locate_template($default);
+
+            if (! $template) {
+                $template = plugin_dir_path(CP_STAKE_POOLS_FILE) . 'templates/' . $default;
+            }
+        }
+
+        return $template;
     }
 }
