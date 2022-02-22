@@ -1,0 +1,8 @@
+parameters:
+  level: 5
+  excludePaths:
+    - vendor
+  scanFiles:
+    - stake-pools.php
+  dynamicConstantNames:
+    - CP_STAKE_POOLS_FILE
