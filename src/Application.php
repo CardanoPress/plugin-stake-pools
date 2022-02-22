@@ -29,7 +29,6 @@ class Application
     {
         $this->setup();
 
-        add_filter('update_post_metadata', [$this, 'getPoolDetails'], 10, 5);
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
         add_filter('template_include', [$this, 'templateLoader']);
 
@@ -78,34 +77,24 @@ class Application
         ]);
     }
 
-    public function getPoolDetails($check, $postId, $metaKey, $newValue, $oldValue)
-    {
-        if ('pool_id' !== $metaKey || empty($newValue) || ($newValue === $oldValue)) {
-            return $check;
-        }
-
-        $network = get_post_meta($postId, 'pool_network', true);
-        $blockfrost = new Blockfrost($network);
-        $poolDetails = $blockfrost->getPoolDetails($newValue);
-
-        update_post_meta($postId, 'pool_data', $poolDetails);
-
-        return $check;
-    }
-
     protected function getPoolData()
     {
-        $meta = get_post_meta($_REQUEST['post'] ?? get_the_ID(), 'pool_data', true) ?: [];
+        if (wp_doing_ajax() || ! is_admin()) {
+            return '';
+        }
 
-        ksort($meta);
+        $poolData = new PoolData($_REQUEST['post'] ?? get_the_ID());
+
         ob_start();
 
         ?>
         <table>
-            <?php foreach ($meta as $key => $value) : ?>
+            <?php foreach ($poolData->toArray() as $key => $value) : ?>
                 <tr>
                     <th><?php echo $key; ?></th>
-                    <td><?php echo $value; ?></td>
+                    <td>
+                        <pre><?php print_r($value); ?></pre>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </table>
