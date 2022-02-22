@@ -62,8 +62,8 @@ class Application
                     'type' => 'text',
                 ],
                 'data' => [
-                    'title' => __('Data', 'cardanopress-stake-pools'),
                     'type' => 'html',
+                    'default' => $this->getPoolData(),
                 ],
             ],
         ]);
@@ -82,5 +82,27 @@ class Application
         update_post_meta($postId, 'pool_data', $poolDetails);
 
         return $check;
+    }
+
+    protected function getPoolData()
+    {
+        $meta = get_post_meta($_REQUEST['post'] ?? get_the_ID(), 'pool_data', true) ?: [];
+        error_log(print_r($_REQUEST, true));
+
+        ksort($meta);
+        ob_start();
+
+        ?>
+        <table>
+            <?php foreach ($meta as $key => $value) : ?>
+                <tr>
+                    <th><?php echo $key; ?></th>
+                    <td><?php echo $value; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php
+
+        return ob_get_clean();
     }
 }
