@@ -7,12 +7,12 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
-use PBWebDev\CardanoPress\Blockfrost;
 use ThemePlate\Cache;
 
 class PoolData
 {
     private string $id;
+    private int $expiration = 5;
 
     public function __construct(string $id)
     {
@@ -21,7 +21,11 @@ class PoolData
 
     public function toArray()
     {
-        return Cache::remember('cp_stake_pool_' . $this->id, [$this, 'getDetails'], MINUTE_IN_SECONDS);
+        return Cache::remember(
+            'cp_stake_pool_' . $this->id,
+            [$this, 'getDetails'],
+            $this->expiration * MINUTE_IN_SECONDS
+        );
     }
 
     public function getDetails()
@@ -30,6 +34,6 @@ class PoolData
         $blockfrost = new Blockfrost($network);
         $poolId = get_post_meta($this->id, 'pool_id', true);
 
-        return $blockfrost->getPoolDetails($poolId);
+        return $blockfrost->getPoolInfo($poolId);
     }
 }
