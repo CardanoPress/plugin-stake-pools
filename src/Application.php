@@ -8,6 +8,7 @@
 namespace PBWebDev\CardanoPress\StakePools;
 
 use PBWebDev\CardanoPress\Blockfrost;
+use ThemePlate\Cache;
 use ThemePlate\CPT\PostType;
 use ThemePlate\Meta\Post;
 
@@ -31,6 +32,12 @@ class Application
         add_filter('update_post_metadata', [$this, 'getPoolDetails'], 10, 5);
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
         add_filter('template_include', [$this, 'templateLoader']);
+
+        $processor = Cache::processor();
+
+        $processor->report(function ($output) {
+            error_log(print_r($output, true));
+        });
     }
 
     public function setup(): void

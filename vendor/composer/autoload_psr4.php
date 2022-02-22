@@ -6,12 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'ThemePlate\\Meta\\' => array($vendorDir . '/themeplate/meta'),
     'ThemePlate\\Core\\' => array($vendorDir . '/themeplate/core'),
     'ThemePlate\\CPT\\' => array($vendorDir . '/themeplate/cpt'),
-    'ThemePlate\\' => array($vendorDir . '/themeplate/column'),
+    'ThemePlate\\' => array($vendorDir . '/themeplate/column', $vendorDir . '/themeplate/process', $vendorDir . '/themeplate/cache'),
     'Tests\\' => array($baseDir . '/tests'),
     'SzepeViktor\\PHPStan\\WordPress\\' => array($vendorDir . '/szepeviktor/phpstan-wordpress/src'),
     'Symfony\\Polyfill\\Php73\\' => array($vendorDir . '/symfony/polyfill-php73'),

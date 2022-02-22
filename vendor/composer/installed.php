@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '86eda8d9c0f4f6a31e94a37b18c87f241de2c329',
         'name' => 'pbwebdev/cardanopress-stake-pools',
         'dev' => true,
     ),
@@ -53,12 +53,12 @@
             'dev_requirement' => true,
         ),
         'pbwebdev/cardanopress-stake-pools' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '86eda8d9c0f4f6a31e94a37b18c87f241de2c329',
             'dev_requirement' => false,
         ),
         'phar-io/manifest' => array(
@@ -405,6 +405,15 @@
             'reference' => 'd44b5abcaa529698e138b2d21bc2a7cf9834039c',
             'dev_requirement' => true,
         ),
+        'themeplate/cache' => array(
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../themeplate/cache',
+            'aliases' => array(),
+            'reference' => '3316115bf4091359a3ad27d2c8f45564446388d7',
+            'dev_requirement' => false,
+        ),
         'themeplate/column' => array(
             'pretty_version' => 'v1.1.0',
             'version' => '1.1.0.0',
@@ -439,6 +448,15 @@
             'install_path' => __DIR__ . '/../themeplate/meta',
             'aliases' => array(),
             'reference' => '2faa586c93b8af2ed3aa421c660addd152f87958',
+            'dev_requirement' => false,
+        ),
+        'themeplate/process' => array(
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../themeplate/process',
+            'aliases' => array(),
+            'reference' => 'de2e1da36ca34d1f06e13dcc8f852fe393bad2fd',
             'dev_requirement' => false,
         ),
         'theseer/tokenizer' => array(

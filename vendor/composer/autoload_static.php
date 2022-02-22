@@ -7,9 +7,9 @@ namespace Composer\Autoload;
 class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
 {
     public static $files = array (
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
+        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'af4b52693518d6f741d0dab964786a35' => __DIR__ . '/..' . '/themeplate/core/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
@@ -56,8 +56,8 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -78,6 +78,8 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\' => 
         array (
             0 => __DIR__ . '/..' . '/themeplate/column',
+            1 => __DIR__ . '/..' . '/themeplate/process',
+            2 => __DIR__ . '/..' . '/themeplate/cache',
         ),
         'Tests\\' => 
         array (
@@ -1141,6 +1143,7 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\CPT\\Base' => __DIR__ . '/..' . '/themeplate/cpt/Base.php',
         'ThemePlate\\CPT\\PostType' => __DIR__ . '/..' . '/themeplate/cpt/PostType.php',
         'ThemePlate\\CPT\\Taxonomy' => __DIR__ . '/..' . '/themeplate/cpt/Taxonomy.php',
+        'ThemePlate\\Cache' => __DIR__ . '/..' . '/themeplate/cache/Cache.php',
         'ThemePlate\\Column' => __DIR__ . '/..' . '/themeplate/column/Column.php',
         'ThemePlate\\Core\\Data' => __DIR__ . '/..' . '/themeplate/core/Data.php',
         'ThemePlate\\Core\\Field\\Checkbox' => __DIR__ . '/..' . '/themeplate/core/Field/Checkbox.php',
@@ -1167,6 +1170,8 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\Meta\\Post' => __DIR__ . '/..' . '/themeplate/meta/Post.php',
         'ThemePlate\\Meta\\Term' => __DIR__ . '/..' . '/themeplate/meta/Term.php',
         'ThemePlate\\Meta\\User' => __DIR__ . '/..' . '/themeplate/meta/User.php',
+        'ThemePlate\\Process' => __DIR__ . '/..' . '/themeplate/process/Process.php',
+        'ThemePlate\\Tasks' => __DIR__ . '/..' . '/themeplate/process/Tasks.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
         'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',

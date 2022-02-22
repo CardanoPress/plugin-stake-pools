@@ -3120,6 +3120,50 @@
             "install-path": "../szepeviktor/phpstan-wordpress"
         },
         {
+            "name": "themeplate/cache",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ThemePlate/Cache.git",
+                "reference": "3316115bf4091359a3ad27d2c8f45564446388d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ThemePlate/Cache/zipball/3316115bf4091359a3ad27d2c8f45564446388d7",
+                "reference": "3316115bf4091359a3ad27d2c8f45564446388d7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0",
+                "themeplate/process": "^1.0"
+            },
+            "time": "2021-01-17T10:26:56+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "ThemePlate\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Gene Alyson Fortunado Torcende",
+                    "email": "genealyson.torcende@gmail.com"
+                }
+            ],
+            "description": "Convenient fragment caching methods",
+            "support": {
+                "issues": "https://github.com/ThemePlate/Cache/issues",
+                "source": "https://github.com/ThemePlate/Cache/tree/v1.1.1"
+            },
+            "install-path": "../themeplate/cache"
+        },
+        {
             "name": "themeplate/column",
             "version": "v1.1.0",
             "version_normalized": "1.1.0.0",
@@ -3297,6 +3341,49 @@
                 "source": "https://github.com/ThemePlate/Meta/tree/v1.4.0"
             },
             "install-path": "../themeplate/meta"
+        },
+        {
+            "name": "themeplate/process",
+            "version": "v1.1.1",
+            "version_normalized": "1.1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ThemePlate/Process.git",
+                "reference": "de2e1da36ca34d1f06e13dcc8f852fe393bad2fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ThemePlate/Process/zipball/de2e1da36ca34d1f06e13dcc8f852fe393bad2fd",
+                "reference": "de2e1da36ca34d1f06e13dcc8f852fe393bad2fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "time": "2021-01-17T10:41:27+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "ThemePlate\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Gene Alyson Fortunado Torcende",
+                    "email": "genealyson.torcende@gmail.com"
+                }
+            ],
+            "description": "ThemePlate background process",
+            "support": {
+                "issues": "https://github.com/ThemePlate/Process/issues",
+                "source": "https://github.com/ThemePlate/Process/tree/v1.1.1"
+            },
+            "install-path": "../themeplate/process"
         },
         {
             "name": "theseer/tokenizer",
