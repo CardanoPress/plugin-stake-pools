@@ -7,6 +7,7 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
+use PBWebDev\CardanoPress\Blockfrost;
 use ThemePlate\CPT\PostType;
 use ThemePlate\Meta\Post;
 
@@ -25,6 +26,13 @@ class Application
 
     private function __construct()
     {
+        $this->setup();
+
+        add_filter('update_post_metadata', [$this, 'getPoolDetails'], 10, 5);
+    }
+
+    public function setup(): void
+    {
         new PostType([
             'name' => 'stake-pool',
             'plural' => __('Stake Pools', 'cardanopress-stake-pools'),
@@ -40,12 +48,39 @@ class Application
         new Post([
             'id' => 'pool',
             'title' => __('Pool Settings', 'cardanopress-stake-pools'),
-            'fields' => array(
+            'fields' => [
+                'network' => [
+                    'title' => __('Network', 'cardanopress-stake-pools'),
+                    'type' => 'radio',
+                    'options' => [
+                        'mainnet' => 'Mainnet',
+                        'testnet' => 'Testnet',
+                    ],
+                ],
                 'id' => [
                     'title' => __('ID', 'cardanopress-stake-pools'),
                     'type' => 'text',
                 ],
-            ),
+                'data' => [
+                    'title' => __('Data', 'cardanopress-stake-pools'),
+                    'type' => 'html',
+                ],
+            ],
         ]);
+    }
+
+    public function getPoolDetails($check, $postId, $metaKey, $newValue, $oldValue)
+    {
+        if ('pool_id' !== $metaKey || empty($newValue) || ($newValue === $oldValue)) {
+            return $check;
+        }
+
+        $network = get_post_meta($postId, 'pool_network', true);
+        $blockfrost = new Blockfrost($network);
+        $poolDetails = $blockfrost->getPoolDetails($newValue);
+
+        update_post_meta($postId, 'pool_data', $poolDetails);
+
+        return $check;
     }
 }
