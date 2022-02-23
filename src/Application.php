@@ -7,7 +7,6 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
-use PBWebDev\CardanoPress\Blockfrost;
 use ThemePlate\Cache;
 use ThemePlate\CPT\PostType;
 use ThemePlate\Meta\Post;
@@ -26,6 +25,11 @@ class Application
     }
 
     private function __construct()
+    {
+        add_action('cardanopress_loaded', [$this, 'init']);
+    }
+
+    public function init(): void
     {
         $this->setup();
 
