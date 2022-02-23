@@ -24,11 +24,19 @@ get_header();
         the_post();
 
         $poolData = new PoolData(get_the_ID());
+        $fullData = $poolData->toArray();
         ?>
 
         <h2><?php the_title(); ?></h2>
 
-        <pre><?php print_r($poolData->toArray()); ?></pre>
+        <button
+            type="button"
+            @click="handleDelegation('<?php echo $fullData['hex']; ?>')"
+            x-bind:disabled='isProcessing'
+        >
+            Delegate
+        </button>
+        <pre><?php print_r($fullData); ?></pre>
     <?php endwhile; ?>
 </div>
 
