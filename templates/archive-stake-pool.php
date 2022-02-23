@@ -10,12 +10,15 @@
  */
 
 use PBWebDev\CardanoPress\StakePools\PoolData;
+use ThemePlate\Enqueue;
+
+Enqueue::asset('script', 'cp-stake-pools-script');
 
 get_header();
 
 ?>
 
-<ul>
+<ul x-data="cardanoPressStakePools">
     <?php while (have_posts()) : ?>
         <?php
         the_post();

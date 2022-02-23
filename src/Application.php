@@ -35,8 +35,10 @@ class Application
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
         add_filter('template_include', [$this, 'templateLoader']);
 
+        $load_path = plugin_dir_path(CP_STAKE_POOLS_FILE);
         $processor = Cache::processor();
 
+        new Manifest($load_path . 'assets');
         $processor->report(function ($output) {
             error_log(print_r($output, true));
         });
