@@ -12,11 +12,15 @@ use ThemePlate\Cache;
 class PoolData
 {
     private int $postId;
-    private int $expiration = 5;
+    private string $poolId;
+    private string $network;
+    private int $expiration = 1;
 
     public function __construct(int $postId)
     {
         $this->postId = $postId;
+        $this->poolId = get_post_meta($this->postId, 'pool_id', true);
+        $this->network = get_post_meta($this->postId, 'pool_network', true);
     }
 
     public function toArray()
@@ -30,18 +34,12 @@ class PoolData
 
     public function getInfo(): array
     {
-        $poolId = get_post_meta($this->postId, 'pool_id', true);
-        $network = get_post_meta($this->postId, 'pool_network', true);
-
-        return (new Blockfrost($network))->getPoolInfo($poolId);
+        return (new Blockfrost($this->network))->getPoolInfo($this->poolId);
     }
 
     public function getDetails(): array
     {
-        $poolId = get_post_meta($this->postId, 'pool_id', true);
-        $network = get_post_meta($this->postId, 'pool_network', true);
-
-        return (new Blockfrost($network))->getPoolDetails($poolId);
+        return (new Blockfrost($this->network))->getPoolDetails($this->poolId);
     }
 
     public function getAll(): array
