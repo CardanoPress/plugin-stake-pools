@@ -31,8 +31,7 @@ class Application
 
     public function init(): void
     {
-        $this->setup();
-
+        add_action('init', [$this, 'setup']);
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
         add_filter('template_include', [$this, 'templateLoader']);
 
@@ -83,11 +82,11 @@ class Application
 
     protected function getPoolData()
     {
-        if (wp_doing_ajax() || ! is_admin()) {
+        if (! $this->inCorrectPage()) {
             return '';
         }
 
-        $poolData = new PoolData($_REQUEST['post'] ?? get_the_ID());
+        $poolData = new PoolData($_REQUEST['post']);
 
         ob_start();
 
@@ -105,6 +104,17 @@ class Application
         <?php
 
         return ob_get_clean();
+    }
+
+    protected function inCorrectPage()
+    {
+        if (wp_doing_ajax() || ! is_admin()) {
+            return false;
+        }
+
+        global $pagenow;
+
+        return 'post.php' === $pagenow && 'stake-pool' === get_post_type($_REQUEST['post']);
     }
 
     public function poolResetScript()
