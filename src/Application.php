@@ -28,6 +28,7 @@ class Application
     {
         add_action('admin_notices', [$this, 'notice']);
         add_action('cardanopress_loaded', [$this, 'init']);
+        add_action('init', [$this, 'setup']);
     }
 
     private function coreActive()
@@ -62,7 +63,6 @@ class Application
 
     public function init(): void
     {
-        add_action('init', [$this, 'setup']);
         add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
         add_filter('template_include', [$this, 'templateLoader']);
 
