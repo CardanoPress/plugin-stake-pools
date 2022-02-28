@@ -92,6 +92,7 @@ class Application
         new Post([
             'id' => 'pool',
             'title' => __('Pool Settings', 'cardanopress-stake-pools'),
+            'screen' => ['stake-pool'],
             'fields' => [
                 'network' => [
                     'title' => __('Network', 'cardanopress-stake-pools'),
@@ -152,6 +153,10 @@ class Application
 
     public function poolResetScript()
     {
+        if (! $this->inCorrectPage()) {
+            return;
+        }
+
         ob_start(); ?>
 
         <script type="text/javascript">
