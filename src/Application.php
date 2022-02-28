@@ -31,7 +31,7 @@ class Application
         add_action('init', [$this, 'setup']);
     }
 
-    private function coreActive(): bool
+    public function coreActive(): bool
     {
         $function = function_exists('cardanoPress');
         $namespace = 'PBWebDev\\CardanoPress\\';

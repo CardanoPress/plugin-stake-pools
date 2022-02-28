@@ -14,6 +14,7 @@ class PoolData
     private int $postId;
     private string $poolId;
     private string $network;
+    private bool $coreActive;
     private int $expiration = 1;
 
     public function __construct(int $postId)
@@ -21,6 +22,8 @@ class PoolData
         $this->postId = $postId;
         $this->poolId = get_post_meta($this->postId, 'pool_id', true);
         $this->network = get_post_meta($this->postId, 'pool_network', true);
+        $application = Application::instance();
+        $this->coreActive = $application->coreActive();
     }
 
     public function toArray()
@@ -34,11 +37,19 @@ class PoolData
 
     public function getInfo(): array
     {
+        if (! $this->coreActive) {
+            return [];
+        }
+
         return (new Blockfrost($this->network))->getPoolInfo($this->poolId);
     }
 
     public function getDetails(): array
     {
+        if (! $this->coreActive) {
+            return [];
+        }
+
         return (new Blockfrost($this->network))->getPoolDetails($this->poolId);
     }
 
