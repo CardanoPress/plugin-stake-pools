@@ -31,7 +31,7 @@ class Application
         add_action('init', [$this, 'setup']);
     }
 
-    private function coreActive()
+    private function coreActive(): bool
     {
         $function = function_exists('cardanoPress');
         $namespace = 'PBWebDev\\CardanoPress\\';
@@ -41,7 +41,7 @@ class Application
         return $function && $blockfrost && $manifest;
     }
 
-    public function notice()
+    public function notice(): void
     {
         if ($this->coreActive()) {
             return;
@@ -140,7 +140,7 @@ class Application
         return ob_get_clean();
     }
 
-    protected function inCorrectPage()
+    protected function inCorrectPage(): bool
     {
         if (wp_doing_ajax() || ! is_admin()) {
             return false;
@@ -151,7 +151,7 @@ class Application
         return 'post.php' === $pagenow && 'stake-pool' === get_post_type($_REQUEST['post']);
     }
 
-    public function poolResetScript()
+    public function poolResetScript(): void
     {
         if (! $this->inCorrectPage()) {
             return;
@@ -187,7 +187,7 @@ class Application
         echo wp_kses(ob_get_clean(), ['script' => []]);
     }
 
-    public function templateLoader($template)
+    public function templateLoader(string $template): string
     {
         if (is_embed()) {
             return $template;
