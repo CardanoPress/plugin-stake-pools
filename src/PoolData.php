@@ -22,8 +22,6 @@ class PoolData
         $this->postId = $postId;
         $this->poolId = get_post_meta($this->postId, 'pool_id', true);
         $this->network = get_post_meta($this->postId, 'pool_network', true);
-        $application = Application::instance();
-        $this->coreActive = $application->coreActive();
     }
 
     public function toArray()
@@ -37,7 +35,9 @@ class PoolData
 
     public function getInfo(): array
     {
-        if (! $this->coreActive) {
+        $application = Application::instance();
+
+        if (! $application->coreActive()) {
             return [];
         }
 
@@ -46,7 +46,9 @@ class PoolData
 
     public function getDetails(): array
     {
-        if (! $this->coreActive) {
+        $application = Application::instance();
+
+        if (! $application->coreActive()) {
             return [];
         }
 
