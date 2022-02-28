@@ -26,7 +26,38 @@ class Application
 
     private function __construct()
     {
+        add_action('admin_notices', [$this, 'notice']);
         add_action('cardanopress_loaded', [$this, 'init']);
+    }
+
+    private function coreActive()
+    {
+        $function = function_exists('cardanoPress');
+        $namespace = 'PBWebDev\\CardanoPress\\';
+        $blockfrost = class_exists($namespace . 'Blockfrost');
+        $manifest = class_exists($namespace . 'Manifest');
+
+        return $function && $blockfrost && $manifest;
+    }
+
+    public function notice()
+    {
+        if ($this->coreActive()) {
+            return;
+        }
+
+        ob_start();
+
+        ?>
+        <div class="error">
+            <p>
+                <strong>CardanoPress - Stake Pools</strong>:
+                CardanoPress core plugin is required or current installed version is incompatible.
+            </p>
+        </div>';
+        <?php
+
+        echo ob_get_clean();
     }
 
     public function init(): void
