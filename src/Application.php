@@ -9,6 +9,7 @@ namespace PBWebDev\CardanoPress\StakePools;
 
 use ThemePlate\Cache;
 use ThemePlate\CPT\PostType;
+use ThemePlate\CPT\Taxonomy;
 use ThemePlate\Meta\Post;
 
 class Application
@@ -87,6 +88,13 @@ class Application
                 'supports' => ['title'],
                 'has_archive' => true,
             ],
+        ]);
+
+        new Taxonomy([
+            'name' => 'stake-pool-category',
+            'type' => 'stake-pool',
+            'plural' => __('Categories', 'cardanopress-stake-pools'),
+            'singular' => __('Category', 'cardanopress-stake-pools'),
         ]);
 
         new Post([
