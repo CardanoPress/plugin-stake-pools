@@ -14,8 +14,7 @@ class PoolData
     private int $postId;
     private string $poolId;
     private string $network;
-    private bool $coreActive;
-    private int $expiration = 1;
+    private const EXPIRATION = 5;
 
     public function __construct(int $postId)
     {
@@ -29,7 +28,7 @@ class PoolData
         return Cache::remember(
             'cp_stake_pool_' . $this->postId,
             [$this, 'getAll'],
-            $this->expiration * MINUTE_IN_SECONDS
+            self::EXPIRATION * MINUTE_IN_SECONDS
         );
     }
 
