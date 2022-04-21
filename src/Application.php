@@ -69,11 +69,10 @@ class Application
 
         $load_path = plugin_dir_path(CP_STAKE_POOLS_FILE);
         $processor = Cache::processor();
+        $logger = cardanoPress()->logger('cache');
 
         new Manifest($load_path . 'assets');
-        $processor->report(function ($output) {
-            error_log(print_r($output, true));
-        });
+        $processor->report([$logger, 'info']);
     }
 
     public function setup(): void
