@@ -30,7 +30,8 @@
     "ext-json": "*",
     "themeplate/cpt": "^1.1",
     "themeplate/meta": "^1.4",
-    "themeplate/cache": "^1.1"
+    "themeplate/cache": "^2.1",
+    "themeplate/process": "^2.1"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",

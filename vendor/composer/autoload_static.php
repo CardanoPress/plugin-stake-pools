@@ -7,12 +7,13 @@ namespace Composer\Autoload;
 class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
 {
     public static $files = array (
-        '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
-        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'af4b52693518d6f741d0dab964786a35' => __DIR__ . '/..' . '/themeplate/core/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
+        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        'a1e09ce905c79a09f3e2f7956bc7e184' => __DIR__ . '/..' . '/themeplate/cache/Cache.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -26,8 +27,10 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         ),
         'T' => 
         array (
+            'ThemePlate\\Process\\' => 19,
             'ThemePlate\\Meta\\' => 16,
             'ThemePlate\\Core\\' => 16,
+            'ThemePlate\\Cache\\' => 17,
             'ThemePlate\\CPT\\' => 15,
             'ThemePlate\\' => 11,
             'Tests\\' => 6,
@@ -63,6 +66,10 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'ThemePlate\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/themeplate/process/src',
+        ),
         'ThemePlate\\Meta\\' => 
         array (
             0 => __DIR__ . '/..' . '/themeplate/meta',
@@ -71,6 +78,10 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         array (
             0 => __DIR__ . '/..' . '/themeplate/core',
         ),
+        'ThemePlate\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/themeplate/cache/src',
+        ),
         'ThemePlate\\CPT\\' => 
         array (
             0 => __DIR__ . '/..' . '/themeplate/cpt',
@@ -78,8 +89,6 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\' => 
         array (
             0 => __DIR__ . '/..' . '/themeplate/column',
-            1 => __DIR__ . '/..' . '/themeplate/process',
-            2 => __DIR__ . '/..' . '/themeplate/cache',
         ),
         'Tests\\' => 
         array (
@@ -157,6 +166,9 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'Doctrine\\Instantiator\\InstantiatorInterface' => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator/InstantiatorInterface.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'PBWebDev\\CardanoPress\\StakePools\\Application' => __DIR__ . '/../..' . '/src/Application.php',
+        'PBWebDev\\CardanoPress\\StakePools\\Blockfrost' => __DIR__ . '/../..' . '/src/Blockfrost.php',
+        'PBWebDev\\CardanoPress\\StakePools\\Manifest' => __DIR__ . '/../..' . '/src/Manifest.php',
+        'PBWebDev\\CardanoPress\\StakePools\\PoolData' => __DIR__ . '/../..' . '/src/PoolData.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -1143,7 +1155,17 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\CPT\\Base' => __DIR__ . '/..' . '/themeplate/cpt/Base.php',
         'ThemePlate\\CPT\\PostType' => __DIR__ . '/..' . '/themeplate/cpt/PostType.php',
         'ThemePlate\\CPT\\Taxonomy' => __DIR__ . '/..' . '/themeplate/cpt/Taxonomy.php',
-        'ThemePlate\\Cache' => __DIR__ . '/..' . '/themeplate/cache/Cache.php',
+        'ThemePlate\\Cache\\CacheManager' => __DIR__ . '/..' . '/themeplate/cache/src/CacheManager.php',
+        'ThemePlate\\Cache\\Handlers\\AbstractHandler' => __DIR__ . '/..' . '/themeplate/cache/src/Handlers/AbstractHandler.php',
+        'ThemePlate\\Cache\\Handlers\\DataHandler' => __DIR__ . '/..' . '/themeplate/cache/src/Handlers/DataHandler.php',
+        'ThemePlate\\Cache\\Handlers\\FileHandler' => __DIR__ . '/..' . '/themeplate/cache/src/Handlers/FileHandler.php',
+        'ThemePlate\\Cache\\StorageManager' => __DIR__ . '/..' . '/themeplate/cache/src/StorageManager.php',
+        'ThemePlate\\Cache\\Storages\\AbstractStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/AbstractStorage.php',
+        'ThemePlate\\Cache\\Storages\\MetadataStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/MetadataStorage.php',
+        'ThemePlate\\Cache\\Storages\\OptionsStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/OptionsStorage.php',
+        'ThemePlate\\Cache\\Storages\\PostMetaStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/PostMetaStorage.php',
+        'ThemePlate\\Cache\\Storages\\TermMetaStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/TermMetaStorage.php',
+        'ThemePlate\\Cache\\Storages\\UserMetaStorage' => __DIR__ . '/..' . '/themeplate/cache/src/Storages/UserMetaStorage.php',
         'ThemePlate\\Column' => __DIR__ . '/..' . '/themeplate/column/Column.php',
         'ThemePlate\\Core\\Data' => __DIR__ . '/..' . '/themeplate/core/Data.php',
         'ThemePlate\\Core\\Field\\Checkbox' => __DIR__ . '/..' . '/themeplate/core/Field/Checkbox.php',
@@ -1170,8 +1192,9 @@ class ComposerStaticInit7eef4542411c69e3a59ad30cc24f740a
         'ThemePlate\\Meta\\Post' => __DIR__ . '/..' . '/themeplate/meta/Post.php',
         'ThemePlate\\Meta\\Term' => __DIR__ . '/..' . '/themeplate/meta/Term.php',
         'ThemePlate\\Meta\\User' => __DIR__ . '/..' . '/themeplate/meta/User.php',
-        'ThemePlate\\Process' => __DIR__ . '/..' . '/themeplate/process/Process.php',
-        'ThemePlate\\Tasks' => __DIR__ . '/..' . '/themeplate/process/Tasks.php',
+        'ThemePlate\\Process\\Async' => __DIR__ . '/..' . '/themeplate/process/src/Async.php',
+        'ThemePlate\\Process\\Report' => __DIR__ . '/..' . '/themeplate/process/src/Report.php',
+        'ThemePlate\\Process\\Tasks' => __DIR__ . '/..' . '/themeplate/process/src/Tasks.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
         'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',

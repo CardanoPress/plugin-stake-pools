@@ -7,21 +7,35 @@
  * @since 0.1.0
  */
 
-namespace ThemePlate;
+namespace ThemePlate\Process;
 
-class Process {
+use Exception;
 
-	private static $storage = array();
-	private $identifier;
+class Async {
+
+	private static array $storage = array();
+	private string $identifier;
+	/**
+	 * @var callable
+	 */
 	private $callback_func;
-	private $callback_args;
+	private array $callback_args;
+	/**
+	 * @var ?callable
+	 */
 	private $success_callback;
+	/**
+	 * @var ?callable
+	 */
 	private $error_callback;
+	/**
+	 * @var mixed
+	 */
 	private $success_output;
-	private $error_output;
+	private string $error_output;
 
 
-	public function __construct( $callback_func, $callback_args = null ) {
+	public function __construct( callable $callback_func, array $callback_args = array() ) {
 
 		$this->callback_func = $callback_func;
 		$this->callback_args = $callback_args;
@@ -34,12 +48,12 @@ class Process {
 	}
 
 
-	private function generate_identifier() {
+	private function generate_identifier(): void {
 
-		$cb_func = print_r( $this->callback_func, true );
-		$cb_args = print_r( $this->callback_args, true );
+		$cb_func = print_r( $this->callback_func, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
+		$cb_args = print_r( $this->callback_args, true ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions
 
-		$this->identifier = 'tpp_' . md5( $cb_func . $cb_args );
+		$this->identifier = 'tpa_' . md5( $cb_func . $cb_args );
 		$base_identifier  = $this->identifier;
 
 		if ( array_key_exists( $this->identifier, self::$storage ) ) {
@@ -55,21 +69,21 @@ class Process {
 	}
 
 
-	public function get_identifier() {
+	public function get_identifier(): string {
 
 		return $this->identifier;
 
 	}
 
 
-	public function handle() {
+	public function handle(): void {
 
 		session_write_close();
 
 		if ( wp_verify_nonce( $_REQUEST['nonce'], $this->identifier ) ) {
 			try {
-				$this->success_output = call_user_func_array( $this->callback_func, (array) $this->callback_args );
-			} catch ( \Exception $e ) {
+				$this->success_output = call_user_func_array( $this->callback_func, $this->callback_args );
+			} catch ( Exception $e ) {
 				$this->error_output = $e->getMessage();
 			} finally {
 				$this->trigger();
@@ -81,7 +95,7 @@ class Process {
 	}
 
 
-	public function dispatch( $custom_url = null ) {
+	public function dispatch( string $custom_url = null ): bool {
 
 		$post_url  = $custom_url ?: admin_url( 'admin-ajax.php' );
 		$post_args = array(
@@ -99,12 +113,14 @@ class Process {
 			'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 		);
 
-		return wp_remote_post( esc_url_raw( $post_url ), $post_args );
+		$response = wp_remote_post( esc_url_raw( $post_url ), $post_args );
+
+		return is_wp_error( $response );
 
 	}
 
 
-	public function then( $callback ) {
+	public function then( callable $callback ): Async {
 
 		$this->success_callback = $callback;
 
@@ -113,7 +129,7 @@ class Process {
 	}
 
 
-	public function catch( $callback ) {
+	public function catch( callable $callback ): Async {
 
 		$this->error_callback = $callback;
 
@@ -122,7 +138,7 @@ class Process {
 	}
 
 
-	private function trigger() {
+	private function trigger(): void {
 
 		if ( $this->error_callback && $this->error_output ) {
 			call_user_func( $this->error_callback, $this->error_output );

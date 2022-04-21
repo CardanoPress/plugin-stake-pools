@@ -7,40 +7,46 @@
  * @since 0.1.0
  */
 
-namespace ThemePlate;
+namespace ThemePlate\Process;
+
+use Exception;
 
 class Tasks {
 
-	private $identifier;
-	private $process;
-	private $report_callback;
-	private $start = 0;
-	private $end   = 0;
-	private $limit = 0;
-	private $every = 0;
-	private $total = 0;
-	private $tasks = array();
+	private string $identifier;
+	private Async $async;
+	/**
+	 * @var callable[]
+	 */
+	private array $report_callback;
+	private int $start   = 0;
+	private int $end     = 0;
+	private int $limit   = 0;
+	private int $every   = 0;
+	private int $total   = 0;
+	private array $tasks = array();
 
 
-	public function __construct( $identifier ) {
+	public function __construct( string $identifier ) {
 
 		$this->identifier = 'tpt_' . $identifier;
-		$this->process    = new Process( array( $this, 'runner' ), $this->identifier );
+		$this->async      = new Async( array( $this, 'runner' ), array( $this->identifier ) );
 
 		add_action( $this->identifier . '_event', array( $this, 'runner' ) );
+		// phpcs:ignore WordPress.WP.CronInterval.ChangeDetected
 		add_filter( 'cron_schedules', array( $this, 'maybe_schedule' ) );
 
 	}
 
 
-	public function get_identifier() {
+	public function get_identifier(): string {
 
-		return $this->process->get_identifier();
+		return $this->async->get_identifier();
 
 	}
 
 
-	private function set_defaults() {
+	private function set_defaults(): void {
 
 		if ( ! $this->limit && $this->every ) {
 			$this->limit = 1;
@@ -55,13 +61,17 @@ class Tasks {
 	}
 
 
-	public function runner( $identifier ) {
+	public function runner( string $identifier ): void {
 
 		if ( $this->is_running() ) {
 			wp_die();
 		}
 
 		$this->tasks = get_option( $identifier . '_tasks', array() );
+
+		if ( ! count( $this->tasks ) ) {
+			wp_die();
+		}
 
 		$this->set_defaults();
 		$this->lock();
@@ -80,8 +90,8 @@ class Tasks {
 			$task = $this->tasks[ $index ];
 
 			try {
-				$output = call_user_func_array( $task['callback_func'], (array) $task['callback_args'] );
-			} catch ( \Exception $e ) {
+				$output = call_user_func_array( $task['callback_func'], $task['callback_args'] );
+			} catch ( Exception $e ) {
 				$output = $e->getMessage();
 			}
 
@@ -93,7 +103,7 @@ class Tasks {
 		}
 
 		$this->unlock();
-		$this->_report( $done );
+		$this->reporter( $done );
 
 		if ( $index >= $this->total ) {
 			$this->complete();
@@ -102,20 +112,20 @@ class Tasks {
 	}
 
 
-	public function execute() {
+	public function execute(): bool {
 
 		if ( empty( $this->tasks ) ) {
-			return null;
+			return false;
 		}
 
 		$this->save();
 
-		return $this->process->dispatch();
+		return $this->async->dispatch();
 
 	}
 
 
-	public function add( $callback_func, $callback_args = array() ) {
+	public function add( callable $callback_func, array $callback_args = array() ): Tasks {
 
 		$this->tasks[] = compact( 'callback_func', 'callback_args' );
 
@@ -124,7 +134,7 @@ class Tasks {
 	}
 
 
-	public function limit( $number ) {
+	public function limit( int $number ): Tasks {
 
 		$this->limit = $number;
 
@@ -133,7 +143,7 @@ class Tasks {
 	}
 
 
-	public function every( $second ) {
+	public function every( int $second ): Tasks {
 
 		$this->every = $second;
 
@@ -142,9 +152,9 @@ class Tasks {
 	}
 
 
-	public function report( $callback ) {
+	public function report( callable $callback ): Tasks {
 
-		$this->report_callback = $callback;
+		$this->report_callback[] = $callback;
 
 		return $this;
 
@@ -168,7 +178,7 @@ class Tasks {
 	}
 
 
-	private function save() {
+	private function save(): void {
 
 		$tasks = array_values( $this->tasks );
 
@@ -184,7 +194,7 @@ class Tasks {
 	}
 
 
-	private function lock() {
+	private function lock(): void {
 
 		$this->start = time();
 
@@ -199,7 +209,7 @@ class Tasks {
 	}
 
 
-	private function unlock() {
+	private function unlock(): void {
 
 		$this->end = time();
 
@@ -208,7 +218,7 @@ class Tasks {
 	}
 
 
-	private function schedule() {
+	private function schedule(): void {
 
 		if ( ! wp_next_scheduled( $this->identifier . '_event', array( $this->identifier ) ) ) {
 			wp_schedule_event( $this->start + $this->every, $this->identifier . '_interval', $this->identifier . '_event', array( $this->identifier ) );
@@ -217,7 +227,7 @@ class Tasks {
 	}
 
 
-	private function complete() {
+	private function complete(): void {
 
 		$timestamp = wp_next_scheduled( $this->identifier . '_event', array( $this->identifier ) );
 
@@ -230,19 +240,15 @@ class Tasks {
 	}
 
 
-	private function _report( $done ) {
+	private function reporter( array $done ): void {
 
-		if ( ! $this->report_callback ) {
-			return null;
+		if ( empty( $this->report_callback ) ) {
+			return;
 		}
 
-		$output = array(
-			'start' => $this->start,
-			'end'   => $this->end,
-			'tasks' => $done,
-		);
-
-		return call_user_func( $this->report_callback, $output );
+		foreach ( $this->report_callback as $report_callback ) {
+			$report_callback( new Report( $done, $this->start, $this->end ) );
+		}
 
 	}
 

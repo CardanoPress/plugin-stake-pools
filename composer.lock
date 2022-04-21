@@ -4,35 +4,40 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5423f3305a9c4400407c3ad8a221a14",
+    "content-hash": "d5d6f7bcf0dd5bf3a87c7fe3271512e5",
     "packages": [
         {
             "name": "themeplate/cache",
-            "version": "v1.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ThemePlate/Cache.git",
-                "reference": "3316115bf4091359a3ad27d2c8f45564446388d7"
+                "reference": "65724565c124ab74af0bba7b06feb2a7919e57c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ThemePlate/Cache/zipball/3316115bf4091359a3ad27d2c8f45564446388d7",
-                "reference": "3316115bf4091359a3ad27d2c8f45564446388d7",
+                "url": "https://api.github.com/repos/ThemePlate/Cache/zipball/65724565c124ab74af0bba7b06feb2a7919e57c1",
+                "reference": "65724565c124ab74af0bba7b06feb2a7919e57c1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0",
+                "php": "^7.4|^8.0"
+            },
+            "suggest": {
                 "themeplate/process": "^1.0"
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "Cache.php"
+                ],
                 "psr-4": {
-                    "ThemePlate\\": ""
+                    "ThemePlate\\Cache\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-3.0"
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -43,9 +48,9 @@
             "description": "Convenient fragment caching methods",
             "support": {
                 "issues": "https://github.com/ThemePlate/Cache/issues",
-                "source": "https://github.com/ThemePlate/Cache/tree/v1.1.1"
+                "source": "https://github.com/ThemePlate/Cache/tree/v2.1.2"
             },
-            "time": "2021-01-17T10:26:56+00:00"
+            "time": "2022-04-20T10:46:32+00:00"
         },
         {
             "name": "themeplate/column",
@@ -216,30 +221,30 @@
         },
         {
             "name": "themeplate/process",
-            "version": "v1.1.1",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ThemePlate/Process.git",
-                "reference": "de2e1da36ca34d1f06e13dcc8f852fe393bad2fd"
+                "reference": "287cfc9ec5e398f728b8506b687ebaf29630998f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ThemePlate/Process/zipball/de2e1da36ca34d1f06e13dcc8f852fe393bad2fd",
-                "reference": "de2e1da36ca34d1f06e13dcc8f852fe393bad2fd",
+                "url": "https://api.github.com/repos/ThemePlate/Process/zipball/287cfc9ec5e398f728b8506b687ebaf29630998f",
+                "reference": "287cfc9ec5e398f728b8506b687ebaf29630998f",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0"
+                "php": "^7.4|^8.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "ThemePlate\\": ""
+                    "ThemePlate\\Process\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-3.0"
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -250,9 +255,9 @@
             "description": "ThemePlate background process",
             "support": {
                 "issues": "https://github.com/ThemePlate/Process/issues",
-                "source": "https://github.com/ThemePlate/Process/tree/v1.1.1"
+                "source": "https://github.com/ThemePlate/Process/tree/v2.1.0"
             },
-            "time": "2021-01-17T10:41:27+00:00"
+            "time": "2022-04-15T14:09:16+00:00"
         }
     ],
     "packages-dev": [
@@ -3422,5 +3427,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

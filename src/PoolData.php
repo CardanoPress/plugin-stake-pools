@@ -25,8 +25,8 @@ class PoolData
 
     public function toArray()
     {
-        return Cache::remember(
-            'cp_stake_pool_' . $this->postId,
+        return Cache::assign('post_' . $this->postId)->remember(
+            'cp_stake_pool',
             [$this, 'getAll'],
             self::EXPIRATION * MINUTE_IN_SECONDS
         );
