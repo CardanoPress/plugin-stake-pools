@@ -19,6 +19,16 @@ return new class extends NodeVisitor {
      */
     private $docBlockFactory;
 
+    /**
+     * @var ?array<string,array<int|string,string>>
+     */
+    private $functionMap = null;
+
+    /**
+     * @var string
+     */
+    private $currentSymbolName;
+
     public function __construct()
     {
         $this->docBlockFactory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
@@ -38,7 +48,34 @@ return new class extends NodeVisitor {
             return null;
         }
 
+        $this->currentSymbolName = $node->name->name;
+
+        if ($node instanceof ClassMethod) {
+            /** @var \PhpParser\Node\Stmt\Class_ $parent */
+            $parent = $this->stack[count($this->stack) - 2];
+
+            if (isset($parent->name)) {
+                $this->currentSymbolName = sprintf(
+                    '%1$s::%2$s',
+                    $parent->name->name,
+                    $node->name->name
+                );
+            }
+        }
+
         $newDocComment = $this->addArrayHashNotation($docComment);
+
+        if ($newDocComment !== null) {
+            $node->setDocComment($newDocComment);
+        }
+
+        $docComment = $node->getDocComment();
+
+        if (!($docComment instanceof Doc)) {
+            return null;
+        }
+
+        $newDocComment = $this->addAdditionalParams($docComment);
 
         if ($newDocComment !== null) {
             $node->setDocComment($newDocComment);
@@ -72,6 +109,10 @@ return new class extends NodeVisitor {
         $additions = [];
 
         foreach ($params as $param) {
+            if (! $param instanceof Param) {
+                continue;
+            }
+
             $addition = $this->getAdditionFromParam($param);
 
             if ($addition !== null) {
@@ -79,7 +120,7 @@ return new class extends NodeVisitor {
             }
         }
 
-        if ($returns) {
+        if ($returns !== [] && $returns[0] instanceof Return_) {
             $addition = $this->getAdditionFromReturn($returns[0]);
 
             if ($addition !== null) {
@@ -95,6 +136,43 @@ return new class extends NodeVisitor {
             "%s\n%s\n */",
             substr($docCommentText, 0, -4),
             implode("\n", $additions)
+        );
+
+        return new Doc($newDocComment, $docComment->getLine(), $docComment->getFilePos());
+    }
+
+    private function addAdditionalParams(Doc $docComment): ?Doc
+    {
+        if (! isset($this->functionMap)) {
+            $this->functionMap = require __DIR__ . '/functionMap.php';
+        }
+
+        if (! isset($this->functionMap[$this->currentSymbolName])) {
+            return null;
+        }
+
+        $parameters = $this->functionMap[$this->currentSymbolName];
+        $returnType = array_shift($parameters);
+        $additions = [];
+
+        foreach ($parameters as $paramName => $paramType) {
+            $additions[] = sprintf(
+                '@phpstan-param %s $%s',
+                $paramType,
+                $paramName
+            );
+        }
+
+        $additions[] = sprintf(
+            '@phpstan-return %s',
+            $returnType
+        );
+
+        $docCommentText = $docComment->getText();
+        $newDocComment = sprintf(
+            "%s\n * %s\n */",
+            substr($docCommentText, 0, -4),
+            implode("\n * ", $additions)
         );
 
         return new Doc($newDocComment, $docComment->getLine(), $docComment->getFilePos());

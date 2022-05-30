@@ -13,7 +13,7 @@ class Blockfrost extends BaseBlockfrost
 {
     public function getPoolInfo(string $id): array
     {
-        $response = $this->client->request('pools/' . $id);
+        $response = $this->request('pools/' . $id);
 
         return 200 === $response['status_code'] ? $response['data'] : [];
     }

@@ -7,22 +7,13 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
-use PBWebDev\CardanoPress\Manifest as BaseManifest;
+use CardanoPress\Foundation\AbstractManifest;
 
-class Manifest extends BaseManifest
+class Manifest extends AbstractManifest
 {
-    protected string $prefix = 'cp-stake-pools-';
+    public const HANDLE_PREFIX = 'cp-stake-pools-';
 
-    protected function fireInjectors(): void
-    {
-    }
-
-    protected function getAssetsBase(): string
-    {
-        return plugin_dir_url(CP_STAKE_POOLS_FILE) . 'assets/dist/';
-    }
-
-    protected function autoEnqueues(): void
+    protected function initialize(): void
     {
     }
 }

@@ -9,7 +9,14 @@ namespace ThemePlate\Cache\Handlers;
 
 class FileHandler extends AbstractHandler {
 
+	/**
+	 * @return false|string
+	 */
 	public function get( string $key, string $path ) {
+
+		if ( $this->forced_refresh( $key ) ) {
+			return false;
+		}
 
 		$value = $this->storage->get( $key );
 
@@ -17,7 +24,11 @@ class FileHandler extends AbstractHandler {
 			$time = @filemtime( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
 
 			if ( $this->storage->get( $key, true ) < $time ) {
-				$value = $this->action_update( $key, compact( 'path', 'time' ) ) ?: $value;
+				$action_update = $this->action_update( $key, compact( 'path', 'time' ) );
+
+				if ( $action_update ) {
+					$value = $action_update;
+				}
 			}
 		}
 
@@ -25,7 +36,9 @@ class FileHandler extends AbstractHandler {
 
 	}
 
-
+	/**
+	 * @return false|string
+	 */
 	public function set( string $key, array $data ) {
 
 		$value = @file_get_contents( $data['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors

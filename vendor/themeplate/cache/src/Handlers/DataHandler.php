@@ -9,38 +9,40 @@ namespace ThemePlate\Cache\Handlers;
 
 class DataHandler extends AbstractHandler {
 
-	public function get( string $key ) {
+	public function get( string $key, array $data ) {
 
-		$data = $this->storage->get( $key, true );
-
-		if ( false === $data ) {
+		if ( $this->forced_refresh( $key ) ) {
 			return false;
 		}
 
-		if ( ! $this->background_update() && time() > $data['timeout'] ) {
-			$data['value'] = $this->action_update( $key, $data ) ?: $data['value'];
+		$value = $this->storage->get( $key );
+
+		if ( false !== $value && ! $this->background_update() && time() > $this->storage->get( $key, true ) ) {
+			$action_update = $this->action_update( $key, $data );
+
+			if ( $action_update ) {
+				$value = $action_update;
+			}
 		}
 
-		return $data['value'] ?? $this->storage->get( $key );
+		return $value;
 
 	}
 
 
 	public function set( string $key, array $data ) {
 
-		$data['value'] = $data['callback']();
+		$value = $data['callback']();
 
-		if ( ! is_wp_error( $data['value'] ) ) {
+		if ( ! is_wp_error( $value ) ) {
 			if ( ! is_object( $data['callback'] ) ) {
-				$data['timeout'] = time() + $data['expiration'];
-
-				$this->storage->set( $key, $data, true );
+				$this->storage->set( $key, time() + $data['expiration'], true );
 			}
 
-			$this->storage->set( $key, $data['value'] );
+			$this->storage->set( $key, $value );
 		}
 
-		return $data['value'];
+		return $value;
 
 	}
 

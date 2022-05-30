@@ -28,6 +28,7 @@
   "require": {
     "php": "^7.4|^8.0",
     "ext-json": "*",
+    "cardanopress/framework": "^1.0",
     "themeplate/cpt": "^1.1",
     "themeplate/meta": "^1.4",
     "themeplate/cache": "^2.1",

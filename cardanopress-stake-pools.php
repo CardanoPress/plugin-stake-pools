@@ -33,4 +33,15 @@ if (! defined('CP_STAKE_POOLS_FILE')) {
 require_once plugin_dir_path(CP_STAKE_POOLS_FILE) . 'vendor/autoload.php';
 
 // Instantiate
-Application::instance();
+function cpStakePools(): Application
+{
+    static $application;
+
+    if (null === $application) {
+        $application = new Application(CP_STAKE_POOLS_FILE);
+    }
+
+    return $application;
+}
+
+cpStakePools()->setupHooks();

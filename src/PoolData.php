@@ -34,9 +34,7 @@ class PoolData
 
     public function getInfo(): array
     {
-        $application = Application::instance();
-
-        if (! $application->coreActive()) {
+        if (! Application::getInstance()->isReady()) {
             return [];
         }
 
@@ -45,9 +43,7 @@ class PoolData
 
     public function getDetails(): array
     {
-        $application = Application::instance();
-
-        if (! $application->coreActive()) {
+        if (! Application::getInstance()->isReady()) {
             return [];
         }
 

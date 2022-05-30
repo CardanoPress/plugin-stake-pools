@@ -7,19 +7,19 @@
 
 namespace ThemePlate\Cache;
 
-use ThemePlate\Cache\Storages\AbstractStorage;
 use ThemePlate\Cache\Storages\OptionsStorage;
 use ThemePlate\Cache\Storages\PostMetaStorage;
+use ThemePlate\Cache\Storages\StorageInterface;
 use ThemePlate\Cache\Storages\TermMetaStorage;
 use ThemePlate\Cache\Storages\UserMetaStorage;
 
 class StorageManager {
 
 	private string $type;
-	private PostMetaStorage $postmeta;
-	private TermMetaStorage $termmeta;
-	private UserMetaStorage $usermeta;
-	private OptionsStorage $options;
+	private StorageInterface $postmeta;
+	private StorageInterface $termmeta;
+	private StorageInterface $usermeta;
+	private StorageInterface $options;
 
 
 	public function __construct() {
@@ -39,7 +39,7 @@ class StorageManager {
 	}
 
 
-	public function get(): AbstractStorage {
+	public function get(): StorageInterface {
 
 		return $this->{$this->current()};
 
@@ -51,7 +51,7 @@ class StorageManager {
 		$decoded    = $this->decode( $field );
 		$this->type = $decoded['type'];
 
-		/** @var AbstractStorage $storage */
+		/** @var StorageInterface $storage */
 		$storage = $this->{$decoded['type']};
 
 		$storage->point( $decoded['id'] );

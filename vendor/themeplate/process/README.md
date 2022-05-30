@@ -3,10 +3,10 @@
 ## Usage
 
 ```php
-use ThemePlate\Process;
+use ThemePlate\Process\Async;
 
 // Instantiate
-$background = new Process( function() {
+$background = new Async( function() {
 	long_running_task();
 } );
 
@@ -14,14 +14,14 @@ $background = new Process( function() {
 $background->dispatch();
 ```
 
-### new Process( $callback_func, $callback_args )
+### new Async( $callback_func, $callback_args )
 
 Execute a heavy one-off task via a non-blocking request
 
 - **$callback_func** *(callable)(Required)* Function to run asynchronously
 - **$callback_args** *(array)(Optional)* Parameters to pass in the callback. Default `null`
 
-### ->dispath()
+### ->dispatch()
 
 Fire off the process in the background instantly
 
@@ -35,7 +35,7 @@ Chainable methods to handle success or error
 ---
 
 ```php
-use ThemePlate\Tasks;
+use ThemePlate\Process\Tasks;
 
 $chores = new Tasks( 'my_day' );
 
@@ -43,8 +43,6 @@ $chores->add( 'first_task', array( 'this', 'that' ) );
 $chores->add( function() {
 	another_task();
 } );
-
-$chores->execute();
 ```
 
 ### new Tasks( $identifier )
@@ -55,6 +53,15 @@ $chores->execute();
 
 - **$callback_func** *(callable)(Required)* Function to run
 - **$callback_args** *(array)(Optional)* Parameters to pass. Default `null`
+
+### ->remove( $callback_func, $callback_args )
+
+- **$callback_func** *(callable)(Required)* Supposed function to run
+- **$callback_args** *(array)(Optional)* The parameters passed. Default `null`
+
+### ->clear()
+
+Remove all currently listed task
 
 ### ->limit( $number )
 
@@ -67,3 +74,11 @@ $chores->execute();
 ### ->report( $callback )
 
 - **$callback** *(callable)(Required)* To run after completion
+
+### Helper methods
+#### ->get_identifier()
+#### ->dump()
+#### ->is_running()
+#### ->next_scheduled()
+#### ->has_queued()
+#### ->get_queued()
