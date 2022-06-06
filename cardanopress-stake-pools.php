@@ -2,9 +2,9 @@
 
 /**
  * Plugin Name: CardanoPress - Stake Pools
- * Plugin URI:  https://github.com/pbwebdev/cardanopress
+ * Plugin URI:  https://github.com/CardanoPress/plugin-stake-pools
  * Author:      Gene Alyson Fortunado Torcende
- * Author URI:  https://pbwebdev.com
+ * Author URI:  https://cardanopress.io
  * Description: A CardanoPress extension for stake pools
  * Version:     0.1.0
  * License:     GPL-2.0-only
@@ -20,6 +20,7 @@ if (! defined('ABSPATH')) {
 }
 
 use PBWebDev\CardanoPress\StakePools\Application;
+use PBWebDev\CardanoPress\StakePools\Installer;
 
 /* ==================================================
 Global constants
@@ -45,3 +46,4 @@ function cpStakePools(): Application
 }
 
 cpStakePools()->setupHooks();
+(new Installer(cpStakePools()))->setupHooks();

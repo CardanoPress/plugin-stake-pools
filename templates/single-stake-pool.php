@@ -10,9 +10,8 @@
  */
 
 use PBWebDev\CardanoPress\StakePools\PoolData;
-use ThemePlate\Enqueue;
 
-Enqueue::asset('script', 'cp-stake-pools-script');
+cpStakePools()->enqueue('script', 'cp-stake-pools-script');
 
 get_header();
 

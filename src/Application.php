@@ -13,9 +13,6 @@ use CardanoPress\Traits\Enqueueable;
 use CardanoPress\Traits\Instantiable;
 use CardanoPress\Traits\Templatable;
 use ThemePlate\Cache;
-use ThemePlate\CPT\PostType;
-use ThemePlate\CPT\Taxonomy;
-use ThemePlate\Meta\Post;
 
 class Application extends AbstractApplication
 {

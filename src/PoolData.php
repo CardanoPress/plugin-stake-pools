@@ -7,6 +7,7 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
+use PBWebDev\CardanoPress\Blockfrost;
 use ThemePlate\Cache;
 
 class PoolData

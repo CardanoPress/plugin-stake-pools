@@ -28,6 +28,13 @@ class Admin extends AbstractAdmin
             $this->registerTaxonomy();
             $this->poolSettingsMetaBox();
         });
+        add_action(Installer::DATA_PREFIX . 'activating', [$this, 'pluginActivating']);
+    }
+
+    public function pluginActivating(): void
+    {
+        $this->registerPostType();
+        flush_rewrite_rules();
     }
 
     private function registerPostType(): void
