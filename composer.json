@@ -1,5 +1,5 @@
 {
-  "name": "pbwebdev/cardanopress-stake-pools",
+  "name": "cardanopress/plugin-stake-pools",
   "description": "A CardanoPress extension for stake pools",
   "type": "wordpress-plugin",
   "keywords": [

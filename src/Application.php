@@ -41,7 +41,6 @@ class Application extends AbstractApplication
         $this->templates->setupHooks();
 
         add_action('cardanopress_loaded', [$this, 'init']);
-        add_action('admin_notices', [$this, 'noticeNeedingCorePlugin']);
     }
 
     public function init(): void
@@ -58,24 +57,5 @@ class Application extends AbstractApplication
         $blockfrost = class_exists($namespace . 'Blockfrost');
 
         return $function && $blockfrost;
-    }
-
-    public function noticeNeedingCorePlugin(): void
-    {
-        if ($this->isReady()) {
-            return;
-        }
-
-        ob_start();
-
-        ?>
-        <div class="notice notice-info">
-            <p>
-                <strong>CardanoPress - Stake Pools</strong> requires the core plugin for its full functionality.
-            </p>
-        </div>
-        <?php
-
-        echo ob_get_clean();
     }
 }
