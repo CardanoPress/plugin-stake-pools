@@ -17,6 +17,37 @@ class PoolData
     private string $network;
     private const EXPIRATION = 5;
 
+    public const INFO_STRUCTURE = [
+        'pool_id' => '',
+        'hex' => '',
+        'vrf_key' => '',
+        'blocks_minted' => 0,
+        'blocks_epoch' => 0,
+        'live_stake' => 0,
+        'live_size' => 0.0,
+        'live_saturation' => 0.0,
+        'live_delegators' => 0,
+        'active_stake' => 0,
+        'active_size' => 0.0,
+        'declared_pledge' => 0,
+        'live_pledge' => 0,
+        'margin_cost' => 0.0,
+        'fixed_cost' => 0,
+        'reward_account' => '',
+        'owners' => [''],
+        'registration' => [''],
+        'retirement' => [''],
+    ];
+
+    public const DETAILS_STRUCTURE = [
+        'url' => '',
+        'hash' => '',
+        'ticker' => '',
+        'name' => '',
+        'description' => '',
+        'homepage' => '',
+    ];
+
     public function __construct(int $postId)
     {
         $this->postId = $postId;
@@ -36,7 +67,7 @@ class PoolData
     public function getInfo(): array
     {
         if (! Application::getInstance()->isReady()) {
-            return [];
+            return self::INFO_STRUCTURE;
         }
 
         return (new Blockfrost($this->network))->getPoolInfo($this->poolId);
@@ -45,7 +76,7 @@ class PoolData
     public function getDetails(): array
     {
         if (! Application::getInstance()->isReady()) {
-            return [];
+            return self::DETAILS_STRUCTURE;
         }
 
         return (new Blockfrost($this->network))->getPoolDetails($this->poolId);
