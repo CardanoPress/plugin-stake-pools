@@ -55,4 +55,9 @@ class Application extends AbstractApplication
 
         return $function && $blockfrost;
     }
+
+    public function getPoolData(int $postId): PoolData
+    {
+        return new PoolData($postId);
+    }
 }

@@ -9,8 +9,6 @@
  * @since   0.1.0
  */
 
-use PBWebDev\CardanoPress\StakePools\PoolData;
-
 get_header();
 
 ?>
@@ -20,7 +18,7 @@ get_header();
         <?php
         the_post();
 
-        $poolData = new PoolData(get_the_ID());
+        $poolData = cpStakePools()->getPoolData(get_the_ID());
         $fullData = $poolData->toArray();
         ?>
 
