@@ -129,8 +129,8 @@ class Admin extends AbstractAdmin
 
         <script type="text/javascript">
             jQuery(document).ready(function($) {
-                var $poolId = $('#pool_id')
-                var $poolNetwork = $('#pool_network input')
+                var $poolId = $('#themeplate_pool_id')
+                var $poolNetwork = $('#themeplate_pool_network input')
                 var lastIdVal = $poolId.val()
                 var lastNetworkVal = $poolNetwork.filter(':checked').val()
 

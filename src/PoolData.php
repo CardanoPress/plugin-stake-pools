@@ -15,7 +15,8 @@ class PoolData
     private int $postId;
     private string $poolId;
     private string $network;
-    private const EXPIRATION = 5;
+
+    public const EXPIRATION = 15; // in minutes
 
     public const INFO_STRUCTURE = [
         'pool_id' => '',
