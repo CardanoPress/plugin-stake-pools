@@ -9,30 +9,33 @@
  * @since   0.1.0
  */
 
+$postId = get_the_ID();
+
 get_header();
 
 ?>
 
-<div x-data="cardanoPressStakePools">
-    <?php while (have_posts()) : ?>
-        <?php
-        the_post();
+<div id="stake-pool-<?php echo $postId; ?>" class="py-5">
+    <div class="container">
+        <div x-data="cardanoPressStakePools">
+            <?php while (have_posts()) : ?>
+                <?php
+                the_post();
 
-        $poolData = cpStakePools()->getPoolData(get_the_ID());
-        $fullData = $poolData->toArray();
-        ?>
+                $poolData = cpStakePools()->getPoolData($postId);
+                $fullData = $poolData->toArray();
+                $poolId   = $fullData['pool_id'];
+                ?>
 
-        <h2><?php the_title(); ?></h2>
+                <h2 class="d-flex align-items-center">
+                    <span class="me-2"><?php the_title(); ?></span>
+                    <?php cpStakePools()->template('delegation', compact('poolId')); ?>
+                </h2>
 
-        <button
-            type="button"
-            @click="handleDelegation('<?php echo $fullData['hex']; ?>')"
-            x-bind:disabled='isProcessing'
-        >
-            Delegate
-        </button>
-        <pre><?php print_r($fullData); ?></pre>
-    <?php endwhile; ?>
+                <pre><?php print_r($fullData); ?></pre>
+            <?php endwhile; ?>
+        </div>
+    </div>
 </div>
 
 <?php

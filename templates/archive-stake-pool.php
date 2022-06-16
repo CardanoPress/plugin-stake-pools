@@ -13,28 +13,28 @@ get_header();
 
 ?>
 
-<ul x-data="cardanoPressStakePools">
-    <?php while (have_posts()) : ?>
-        <?php
-        the_post();
+<div class="container py-5">
+    <ul x-data="cardanoPressStakePools">
+        <?php while (have_posts()) : ?>
+            <?php
+            the_post();
 
-        $poolData = cpStakePools()->getPoolData(get_the_ID());
-        $fullData = $poolData->toArray();
-        ?>
+            $poolData = cpStakePools()->getPoolData(get_the_ID());
+            $fullData = $poolData->toArray();
+            $poolId   = $fullData['pool_id'];
+            ?>
 
-        <li>
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            <button
-                type="button"
-                @click="handleDelegation('<?php echo $fullData['hex']; ?>')"
-                x-bind:disabled="isProcessing"
-            >
-                Delegate
-            </button>
-            <pre><?php print_r($fullData); ?></pre>
-        </li>
-    <?php endwhile; ?>
-</ul>
+            <li>
+                <h2 class="d-flex align-items-center">
+                    <a href="<?php the_permalink(); ?>" class="me-2"><?php the_title(); ?></a>
+                    <?php cpStakePools()->template('delegation', compact('poolId')); ?>
+                </h2>
+
+                <pre><?php print_r($fullData); ?></pre>
+            </li>
+        <?php endwhile; ?>
+    </ul>
+</div>
 
 <?php
 
