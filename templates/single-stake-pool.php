@@ -11,8 +11,6 @@
 
 use PBWebDev\CardanoPress\StakePools\PoolData;
 
-cpStakePools()->enqueue('script', 'cp-stake-pools-script');
-
 get_header();
 
 ?>
