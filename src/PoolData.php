@@ -8,13 +8,12 @@
 namespace PBWebDev\CardanoPress\StakePools;
 
 use PBWebDev\CardanoPress\Blockfrost;
-use ThemePlate\Cache;
 
 class PoolData
 {
-    private int $postId;
-    private string $poolId;
-    private string $network;
+    protected int $postId;
+    protected string $poolId;
+    protected string $network;
 
     public const EXPIRATION = 15; // in minutes
 
@@ -58,7 +57,7 @@ class PoolData
 
     public function toArray()
     {
-        return Cache::assign('post_' . $this->postId)->remember(
+        return Application::getInstance()->cacheManager()->assign('post_' . $this->postId)->remember(
             'cp_stake_pool',
             [$this, 'getAll'],
             self::EXPIRATION * MINUTE_IN_SECONDS

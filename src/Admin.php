@@ -14,6 +14,8 @@ use ThemePlate\Meta\PostMeta;
 
 class Admin extends AbstractAdmin
 {
+    public const OPTION_KEY = 'cp-stake-pools';
+
     protected function initialize(): void
     {
     }

@@ -12,7 +12,8 @@ use CardanoPress\Traits\Configurable;
 use CardanoPress\Traits\Enqueueable;
 use CardanoPress\Traits\Instantiable;
 use CardanoPress\Traits\Templatable;
-use ThemePlate\Cache;
+use ThemePlate\Cache\CacheManager;
+use ThemePlate\Process\Tasks;
 
 class Application extends AbstractApplication
 {
@@ -20,6 +21,9 @@ class Application extends AbstractApplication
     use Enqueueable;
     use Instantiable;
     use Templatable;
+
+    protected Tasks $tasks;
+    protected CacheManager $cache;
 
     protected function initialize(): void
     {
@@ -29,6 +33,10 @@ class Application extends AbstractApplication
         $this->admin = new Admin($this->logger('admin'));
         $this->manifest = new Manifest($path . 'assets/dist', $this->getData('Version'));
         $this->templates = new Templates($path . 'templates');
+        $tasks = new Tasks(Admin::OPTION_KEY);
+        $this->cache = new CacheManager($tasks);
+
+        $tasks->report([$this->logger('poolData'), 'info']);
     }
 
     public function setupHooks(): void
@@ -42,9 +50,6 @@ class Application extends AbstractApplication
 
     public function init(): void
     {
-        $processor = Cache::processor();
-
-        $processor->report([$this->logger('cache'), 'info']);
     }
 
     public function isReady(): bool
@@ -59,5 +64,10 @@ class Application extends AbstractApplication
     public function getPoolData(int $postId): PoolData
     {
         return new PoolData($postId);
+    }
+
+    public function cacheManager(): CacheManager
+    {
+        return $this->cache;
     }
 }
