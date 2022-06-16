@@ -6,10 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'af4b52693518d6f741d0dab964786a35' => $vendorDir . '/themeplate/core/functions.php',
     '7b11c4dc42b3b3023073cb14e519683c' => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php',
     'c964ee0ededf28c96ebd9db5099ef910' => $vendorDir . '/guzzlehttp/promises/src/functions_include.php',
     '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
+    'cffb582bbe3444c214b7b73b61493f7d' => $vendorDir . '/themeplate/enqueue/Enqueue.php',
     'a1e09ce905c79a09f3e2f7956bc7e184' => $vendorDir . '/themeplate/cache/Cache.php',
 );

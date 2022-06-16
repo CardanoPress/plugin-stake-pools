@@ -8,10 +8,9 @@
 namespace PBWebDev\CardanoPress\StakePools;
 
 use CardanoPress\Foundation\AbstractAdmin;
-use Exception;
 use ThemePlate\CPT\PostType;
 use ThemePlate\CPT\Taxonomy;
-use ThemePlate\Meta\Post;
+use ThemePlate\Meta\PostMeta;
 
 class Admin extends AbstractAdmin
 {
@@ -21,14 +20,12 @@ class Admin extends AbstractAdmin
 
     public function setupHooks(): void
     {
-        add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
+        $this->registerPostType();
+        $this->registerTaxonomy();
+        $this->poolSettingsMetaBox();
 
-        add_action('init', function () {
-            $this->registerPostType();
-            $this->registerTaxonomy();
-            $this->poolSettingsMetaBox();
-        });
         add_action(Installer::DATA_PREFIX . 'activating', [$this, 'pluginActivating']);
+        add_action('admin_print_footer_scripts-post.php', [$this, 'poolResetScript']);
     }
 
     public function pluginActivating(): void
@@ -39,68 +36,50 @@ class Admin extends AbstractAdmin
 
     private function registerPostType(): void
     {
-        try {
-            new PostType([
-                'name' => 'stake-pool',
-                'plural' => __('Stake Pools', 'cardanopress-stake-pools'),
-                'singular' => __('Stake Pool', 'cardanopress-stake-pools'),
-                'args' => [
-                    'menu_position' => 5,
-                    'menu_icon' => 'dashicons-database',
-                    'supports' => ['title'],
-                    'has_archive' => true,
-                ],
-            ]);
-        } catch (Exception $exception) {
-            $this->log($exception->getMessage());
-        }
+        $postType = new PostType('stake-pool', [
+            'menu_position' => 5,
+            'menu_icon' => 'dashicons-database',
+            'supports' => ['title'],
+            'has_archive' => true,
+        ]);
+
+        $postType->register();
     }
 
     private function registerTaxonomy(): void
     {
-        try {
-            new Taxonomy([
-                'name' => 'stake-pool-category',
-                'type' => 'stake-pool',
-                'plural' => __('Categories', 'cardanopress-stake-pools'),
-                'singular' => __('Category', 'cardanopress-stake-pools'),
-            ]);
-        } catch (Exception $exception) {
-            $this->log($exception->getMessage());
-        }
+        $taxonomy = new Taxonomy('stake-pool-category');
+
+        $taxonomy->labels(__('Category', 'cardanopress-stake-pools'), __('Categories', 'cardanopress-stake-pools'));
+        $taxonomy->associate('stake-pool')->register();
     }
 
     private function poolSettingsMetaBox(): void
     {
-        try {
-            $post = new Post([
-                'id' => 'pool',
-                'title' => __('Pool Settings', 'cardanopress-stake-pools'),
-                'screen' => ['stake-pool'],
-                'fields' => [
-                    'network' => [
-                        'title' => __('Network', 'cardanopress-stake-pools'),
-                        'type' => 'radio',
-                        'options' => [
-                            'mainnet' => 'Mainnet',
-                            'testnet' => 'Testnet',
-                        ],
-                    ],
-                    'id' => [
-                        'title' => __('ID', 'cardanopress-stake-pools'),
-                        'type' => 'text',
-                    ],
-                    'data' => [
-                        'type' => 'html',
-                        'default' => $this->getPoolData(),
-                    ],
-                ],
-            ]);
+        $postMeta = new PostMeta(__('Pool Settings', 'cardanopress-stake-pools'), [
+            'data_prefix' => 'pool_',
+        ]);
 
-            $this->storeConfig($post->get_config());
-        } catch (Exception $exception) {
-            $this->log($exception->getMessage());
-        }
+        $postMeta->fields([
+            'network' => [
+                'title' => __('Network', 'cardanopress-stake-pools'),
+                'type' => 'radio',
+                'options' => [
+                    'mainnet' => 'Mainnet',
+                    'testnet' => 'Testnet',
+                ],
+            ],
+            'id' => [
+                'title' => __('ID', 'cardanopress-stake-pools'),
+                'type' => 'text',
+            ],
+            'data' => [
+                'type' => 'html',
+                'default' => $this->getPoolData(),
+            ]
+        ]);
+
+        $postMeta->location('stake-pool')->create();
     }
 
     protected function getPoolData()
