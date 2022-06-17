@@ -8,6 +8,7 @@
 namespace PBWebDev\CardanoPress\StakePools;
 
 use PBWebDev\CardanoPress\Blockfrost;
+use WP_Error;
 
 class PoolData
 {
@@ -57,11 +58,17 @@ class PoolData
 
     public function toArray()
     {
-        return Application::getInstance()->cacheManager()->assign('post_' . $this->postId)->remember(
+        $poolData = Application::getInstance()->cacheManager()->assign('post_' . $this->postId)->remember(
             'cp_stake_pool',
             [$this, 'getAll'],
             self::EXPIRATION * MINUTE_IN_SECONDS
         );
+
+        if (empty($poolData) || is_wp_error($poolData)) {
+            return array_merge(self::INFO_STRUCTURE, self::DETAILS_STRUCTURE);
+        }
+
+        return $poolData;
     }
 
     public function getInfo(): array
@@ -82,8 +89,18 @@ class PoolData
         return (new Blockfrost($this->network))->getPoolDetails($this->poolId);
     }
 
-    public function getAll(): array
+    public function getAll()
     {
-        return array_merge($this->getInfo(), $this->getDetails());
+        $poolData = array_merge($this->getInfo(), $this->getDetails());
+
+        if ($poolData === array_merge(self::INFO_STRUCTURE, self::DETAILS_STRUCTURE)) {
+            return new WP_Error(Admin::OPTION_KEY, __('Application not ready', 'cardanopress-stake-pools'));
+        }
+
+        if (empty($poolData)) {
+            return new WP_Error(Admin::OPTION_KEY, __('Blockfrost not ready', 'cardanopress-stake-pools'));
+        }
+
+        return $poolData;
     }
 }
