@@ -9,7 +9,7 @@
  * @since   0.1.0
  */
 
-if (empty($poolId)) {
+if (empty($poolHex)) {
     return;
 }
 
@@ -21,7 +21,7 @@ if (empty($text)) {
 
 <button
     class="btn btn-primary"
-    @click="handleDelegation('<?php echo $poolId; ?>')"
+    @click="handleDelegation('<?php echo $poolHex; ?>')"
     x-bind:disabled="isProcessing"
 >
     <?php echo $text; ?>

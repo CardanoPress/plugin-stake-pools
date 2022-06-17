@@ -24,12 +24,12 @@ get_header();
 
                 $poolData = cpStakePools()->getPoolData($postId);
                 $fullData = $poolData->toArray();
-                $poolId   = $fullData['pool_id'];
+                $poolHex  = $fullData['hex'];
                 ?>
 
                 <h2 class="d-flex align-items-center">
                     <span class="me-2"><?php the_title(); ?></span>
-                    <?php cpStakePools()->template('delegation', compact('poolId')); ?>
+                    <?php cpStakePools()->template('delegation', compact('poolHex')); ?>
                 </h2>
 
                 <pre><?php print_r($fullData); ?></pre>
