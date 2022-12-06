@@ -98,7 +98,7 @@ class Admin extends AbstractAdmin
         <table>
             <?php foreach ($poolData->toArray() as $key => $value) : ?>
                 <tr>
-                    <th><?php echo $key; ?></th>
+                    <th><?php echo esc_html($key); ?></th>
                     <td>
                         <pre><?php print_r($value); ?></pre>
                     </td>
