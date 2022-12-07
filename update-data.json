@@ -1,8 +1,8 @@
 {
-  "new_version"    : "0.3.0",
+  "new_version"    : "0.4.0",
   "homepage"       : "https://github.com/CardanoPress/plugin-stake-pools",
-  "download_link"  : "https://github.com/CardanoPress/plugin-stake-pools/archive/refs/tags/v0.3.0.zip",
-  "last_updated"   : "2022-12-06",
+  "download_link"  : "https://github.com/CardanoPress/plugin-stake-pools/archive/refs/tags/v0.4.0.zip",
+  "last_updated"   : "2022-12-07",
   "author"         : "Gene Alyson Fortunado Torcende",
   "author_profile" : "https://cardanopress.io",
   "requires"       : "5.8.0",
