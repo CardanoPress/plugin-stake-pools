@@ -3,7 +3,7 @@
 /**
  * Plugin Name: CardanoPress - Stake Pools
  * Plugin URI:  https://github.com/CardanoPress/plugin-stake-pools
- * Author:      Gene Alyson Fortunado Torcende
+ * Author:      CardanoPress
  * Author URI:  https://cardanopress.io
  * Description: A CardanoPress extension for stake pools
  * Version:     0.4.0
