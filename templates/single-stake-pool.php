@@ -24,7 +24,7 @@ get_header();
 
                 $poolData = cpStakePools()->getPoolData($postId);
                 $fullData = $poolData->toArray();
-                $poolHex  = $fullData['hex'];
+                $poolHex  = $fullData['hex'] ?? '';
                 ?>
 
                 <h2 class="d-flex align-items-center">
