@@ -6,7 +6,7 @@
  * Author:      CardanoPress
  * Author URI:  https://cardanopress.io
  * Description: A CardanoPress extension for stake pools
- * Version:     0.4.0
+ * Version:     0.5.0
  * License:     GPL-2.0-only
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
