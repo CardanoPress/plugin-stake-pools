@@ -27,13 +27,17 @@ class BlockfrostClient
     public const ENDPOINT = [
         'mainnet' => 'https://cardano-mainnet.blockfrost.io/api/v0/',
         'testnet' => 'https://cardano-testnet.blockfrost.io/api/v0/',
+        'preprod' => 'https://cardano-preprod.blockfrost.io/api/v0/',
+        'preview' => 'https://cardano-preview.blockfrost.io/api/v0/',
     ];
 
     /**
      * Create a new BlockfrostClient instance
      */
-    public function __construct(string $project_id, string $network = 'mainnet')
+    public function __construct(string $project_id)
     {
+        $network = substr($project_id, 0, 7);
+
         if (! array_key_exists($network, self::ENDPOINT)) {
             $network = 'mainnet';
         }
@@ -107,6 +111,13 @@ class BlockfrostClient
 
             $value['status_code'] = $response->getStatusCode();
             $value['data'] = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+            if (isset($value['data']['status_code'], $value['data']['error'], $value['data']['message'])) {
+                $value['status_code'] = $value['data']['status_code'];
+
+                $value['error'] = $value['data'];
+                $value['data']  = [];
+            }
         } catch (RequestException $error) {
             $response = $error->getResponse();
 

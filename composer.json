@@ -28,22 +28,22 @@
   "require": {
     "php": "^7.4|^8.0",
     "ext-json": "*",
-    "cardanopress/framework": "^1.0",
+    "cardanopress/framework": "^1.4",
     "kermage/external-update-manager": "^2.2",
-    "themeplate/cpt": "^2.0",
-    "themeplate/meta": "^2.0",
-    "themeplate/cache": "^2.1",
-    "themeplate/process": "^2.1"
+    "themeplate/cpt": "^2.2",
+    "themeplate/meta": "^2.2",
+    "themeplate/cache": "^2.6",
+    "themeplate/process": "^2.6"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-    "wp-coding-standards/wpcs": "^2.2",
-    "squizlabs/php_codesniffer": "^3.5",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpunit/phpunit": "^9.5",
-    "phpstan/phpstan": "^1.0",
-    "szepeviktor/phpstan-wordpress": "^1.0"
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+    "wp-coding-standards/wpcs": "^2.3",
+    "squizlabs/php_codesniffer": "^3.7.2",
+    "phpcompatibility/phpcompatibility-wp": "^2.1.4",
+    "phpunit/phpunit": "^9.6.5",
+    "phpstan/phpstan": "^1.10.5",
+    "szepeviktor/phpstan-wordpress": "^1.1.7"
   },
   "autoload": {
     "psr-4": {

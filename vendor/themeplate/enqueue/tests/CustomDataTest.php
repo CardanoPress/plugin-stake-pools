@@ -9,14 +9,10 @@ namespace Tests;
 use Brain\Monkey;
 use PHPUnit\Framework\TestCase;
 use ThemePlate\Enqueue\CustomData;
-use ThemePlate\Tester\Utils;
+use function Brain\Monkey\Functions\expect;
 use function Brain\Monkey\Functions\stubEscapeFunctions;
 
 class CustomDataTest extends TestCase {
-	// phpcs:disable WordPress.WP.EnqueuedResources
-	public const SCRIPT_TAG = "<script src='script-src' id='script-js'></script>\n";
-	public const STYLE_TAG  = "<link rel='stylesheet' id='style-css' href='style-href' media='all' />\n";
-
 	protected function setUp(): void {
 		parent::setUp();
 		Monkey\setUp();
@@ -27,157 +23,123 @@ class CustomDataTest extends TestCase {
 		parent::tearDown();
 	}
 
-	public function for_stringify_data_correctly(): array {
+	public function for_methods_will_trigger_an_error_on_unwanted_type(): array {
 		return array(
-			'without passing any custom data'    => array(
-				'test',
-				array(),
-				'',
-			),
-			'with string key and value'          => array(
-				'test',
-				array( 'try' => 'this' ),
-				" try='this'",
-			),
-			'with string key and "true" value'   => array(
-				'test',
-				array( 'try' => true ),
-				' try',
-			),
-			'with string key and "false" value'  => array(
-				'test',
-				array( 'try' => false ),
-				'',
-			),
-			'with string key and "0" value'      => array(
-				'test',
-				array( 'try' => 0 ),
-				'',
-			),
-			'with string key and null value'     => array(
-				'test',
-				array( 'try' => null ),
-				'',
-			),
-			'with string key and empty string'   => array(
-				'test',
-				array( 'try' => '' ),
-				'',
-			),
-			'with string key and empty array'    => array(
-				'test',
-				array( 'try' => array() ),
-				'',
-			),
-			'with string key and integer value'  => array(
-				'test',
-				array( 'try' => 1 ),
-				" try='1'",
-			),
-			'with string key and array value'    => array(
-				'test',
-				array( 'me' => array( 'need', 'want' ) ),
-				" me='need'",
-			),
-			'with string key and deep array'     => array(
-				'test',
-				array( 'me' => array( array( 'need', 'want' ) ) ),
-				'',
-			),
-			'with integer key and value'         => array(
-				'test',
-				array( 1 => 1 ),
-				" 1='1'",
-			),
-			'with integer key and "true" value'  => array(
-				'test',
-				array( 1 => true ),
-				' 1',
-			),
-			'with integer key and "false" value' => array(
-				'test',
-				array( 1 => false ),
-				'',
-			),
-			'with integer key and "0" value'     => array(
-				'test',
-				array( 1 => 0 ),
-				'',
-			),
-			'with integer key and null value'    => array(
-				'test',
-				array( 1 => null ),
-				'',
-			),
-			'with integer key and empty string'  => array(
-				'test',
-				array( 1 => '' ),
-				'',
-			),
-			'with integer key and empty array'   => array(
-				'test',
-				array( 1 => array() ),
-				'',
-			),
-			'with integer key and string value'  => array(
-				'test',
-				array( 1 => 'one' ),
-				" 1='one'",
-			),
-			'with integer key and array value'   => array(
-				'test',
-				array( 1 => array( 2, 3 ) ),
-				" 1='2'",
-			),
-			'with integer key and deep array'    => array(
-				'test',
-				array( 1 => array( array( 2 ), 3 ) ),
-				'',
-			),
+			'with unknown type passed'   => array( 'try' ),
+			'with incorrect type passed' => array( 'StYlE' ),
 		);
 	}
 
 	/**
-	 * @dataProvider for_stringify_data_correctly
+	 * @dataProvider for_methods_will_trigger_an_error_on_unwanted_type
 	 */
-	public function test_stringify_data_correctly( string $handle, array $attributes, string $equivalent ): void {
+	public function test_add_method_asset_triggers_an_error_on_unwanted_type( string $type ): void {
 		stubEscapeFunctions();
+		expect( '_doing_it_wrong' )->withAnyArgs()->once();
 
-		$data    = new CustomData();
-		$scripts = Utils::get_reflection_property( CustomData::class, 'scripts' );
-		$styles  = Utils::get_reflection_property( CustomData::class, 'styles' );
+		( new CustomData() )->add( $type, '', array() );
 
-		$scripts->setValue( $data, array( $handle => $attributes ) );
-		$styles->setValue( $data, array( $handle => $attributes ) );
-
-		$expect_script = str_replace( ' src', "$equivalent src", self::SCRIPT_TAG );
-		$expect_style  = str_replace( ' href=', "$equivalent href=", self::STYLE_TAG );
-
-		$actual_script = $data->script( self::SCRIPT_TAG, $handle );
-		$actual_style  = $data->style( self::STYLE_TAG, $handle );
-
-		$data->action();
-		$this->assertSame( $expect_script, $actual_script );
-		$this->assertSame( $expect_style, $actual_style );
+		$this->assertTrue( true );
 	}
 
-	public function for_no_replacements_made_to_unknown_handles(): array {
+	/**
+	 * @dataProvider for_methods_will_trigger_an_error_on_unwanted_type
+	 */
+	public function test_filter_method_data_triggers_an_error_on_unwanted_type( string $type ): void {
+		stubEscapeFunctions();
+		expect( '_doing_it_wrong' )->withAnyArgs()->once();
+
+		( new CustomData() )->filter( array(), $type );
+
+		$this->assertTrue( true );
+	}
+
+	public function for_filter_only_return_wanted_attributes(): array {
 		return array(
-			'with even "important" handle' => array( 'important' ),
-			'with even asking "please"'    => array( 'please' ),
+			'with script and wanted attributes' => array(
+				'scripts',
+				array(
+					'async'       => true,
+					'crossorigin' => 'anonymous',
+					'my-attr'     => 'hello',
+					'data-custom' => 'hello',
+				),
+				array(
+					'async'       => true,
+					'crossorigin' => 'anonymous',
+					'data-custom' => 'hello',
+				),
+			),
+			'with style and wanted attributes'  => array(
+				'styles',
+				array(
+					'hreflang'       => 'en-tl',
+					'referrerpolicy' => 'origin',
+					'my-attr'        => 'hello',
+					'data-custom'    => 'hello',
+				),
+				array(
+					'hreflang'       => 'en-tl',
+					'referrerpolicy' => 'origin',
+					'data-custom'    => 'hello',
+				),
+			),
 		);
 	}
 	/**
-	 * @dataProvider for_no_replacements_made_to_unknown_handles
+	 * @dataProvider for_filter_only_return_wanted_attributes
 	 */
-	public function test_no_replacements_made_to_unknown_handles( string $handle ): void {
-		$data = new CustomData();
+	public function test_filter_only_return_wanted_attributes( string $type, array $data, array $expected ): void {
+		stubEscapeFunctions();
+		expect( '_deprecated_function' )->withAnyArgs()->once();
 
-		$actual_script = $data->script( self::SCRIPT_TAG, $handle );
-		$actual_style  = $data->style( self::STYLE_TAG, $handle );
+		$actual = ( new CustomData() )->filter( $data, $type );
 
-		$data->action();
-		$this->assertSame( self::SCRIPT_TAG, $actual_script );
-		$this->assertSame( self::STYLE_TAG, $actual_style );
+		$this->assertSame( $expected, $actual );
+	}
+
+	public function for_action_has_wanted_filter(): array {
+		// phpcs:disable WordPress.Arrays.MultipleStatementAlignment
+		return array(
+			'with scripts and no custom data added to handles' => array(
+				'script',
+				false,
+			),
+			'with scripts and custom data added to handles'    => array(
+				'script',
+				true,
+			),
+			'with styles and no custom data added to handles'  => array(
+				'style',
+				false,
+			),
+			'with styles and custom data added to handles'     => array(
+				'style',
+				true,
+			),
+		);
+		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment
+	}
+
+	/**
+	 * @dataProvider for_action_has_wanted_filter
+	 */
+	public function test_action_has_wanted_filter( string $type, bool $with_data ): void {
+		$custom = new CustomData();
+
+		if ( $with_data ) {
+			$custom->$type( 'test', array( 'this' => 'please' ) );
+		}
+
+		$custom->action();
+
+		$type_class = 'ThemePlate\Enqueue\\' . ucfirst( $type ) . 'sTag';
+		$has_filter = has_filter( $type . '_loader_tag', $type_class . '->filter()' );
+
+		if ( $with_data ) {
+			$this->assertSame( 10, $has_filter );
+		} else {
+			$this->assertFalse( $has_filter );
+		}
 	}
 }

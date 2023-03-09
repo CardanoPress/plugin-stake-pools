@@ -47,6 +47,25 @@ class PostTypeTest extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_defaults_applied(): void {
+		$name = 'test';
+		$type = new PostType( $name );
+
+		$type->register();
+
+		$object = get_post_type_object( $name );
+
+		foreach ( $type->defaults() as $key => $value ) {
+			$this->assertObjectHasAttribute( $key, $object );
+
+			if ( is_array( $value ) ) {
+				continue;
+			}
+
+			$this->assertSame( $value, $object->$key );
+		}
+	}
+
 	public function test_late_taxonomy_association(): void {
 		( new PostType( 'test' ) )->associate( 'this' )->register();
 
@@ -100,6 +119,36 @@ class PostTypeTest extends WP_UnitTestCase {
 
 		$this->assertNotSame( strtolower( $type->label ), $type->rewrite['slug'] );
 		$this->assertSame( $args['rewrite']['slug'], $type->rewrite['slug'] );
+	}
+
+	public function test_rewrite_if_non_public(): void {
+		$name = 'test';
+		$args = array( 'public' => false );
+
+		( new PostType( $name, $args ) )->labels( 'Want', 'Wants' )->register();
+
+		$type = get_post_type_object( $name );
+
+		$this->assertFalse( $type->rewrite );
+	}
+
+	public function for_use_editor(): array {
+		return array(
+			'nothing set' => array( null, true ),
+			'set classic' => array( true, false ),
+			'force block' => array( false, true ),
+		);
+	}
+
+	/** @dataProvider for_use_editor */
+	public function test_use_editor( ?bool $classic_editor, bool $expect ): void {
+		$post_type = 'test';
+
+		$args = null === $classic_editor ? array() : compact( 'classic_editor' );
+
+		( new PostType( $post_type, $args ) )->register();
+
+		$this->assertSame( $expect, use_block_editor_for_post_type( $post_type ) );
 	}
 
 	public function test_for_messages_filter(): void {

@@ -13,30 +13,53 @@ use WP_Dependencies;
 
 class CustomData {
 
-	public const ATTRIBUTES = array(
-		'common'  => array(
-			'crossorigin',
-			'integrity',
-			'referrerpolicy',
-		),
-		'scripts' => array(
-			'async',
-			'defer',
-			'nomodule',
-			'nonce',
-			'type',
-		),
-		'styles'  => array(
-			'disabled',
-			'hreflang',
-		),
-	);
-
 	private array $scripts = array();
 	private array $styles  = array();
 
 
-	public function action(): void {
+	public function filter( array $data, string $type ): array {
+
+		if ( ! in_array( $type, array( 'scripts', 'styles' ), true ) ) {
+			_doing_it_wrong( __METHOD__, esc_attr( 'Only "scripts" and "styles" are known types' ), '2.3.0' );
+			return array();
+		}
+
+		_deprecated_function( __METHOD__, '2.4.0', esc_html( __NAMESPACE__ . '\\' . ucfirst( $type ) . 'Tag::filter_attributes' ) );
+
+		return ( 'scripts' === $type ? ScriptsTag::filter_attributes( $data ) : StylesTag::filter_attributes( $data ) );
+
+	}
+
+
+	public function add( string $type, string $handle, array $data ): void {
+
+		if ( ! in_array( $type, array( 'script', 'style' ), true ) ) {
+			_doing_it_wrong( __METHOD__, esc_attr( 'Only "script" and "style" are known types' ), '2.2.0' );
+			return;
+		}
+
+		_deprecated_function( __METHOD__, '2.4.0', esc_html( self::class . '::' . $type ) );
+
+		$this->{$type . 's'}[ $handle ] = $data;
+
+	}
+
+
+	public function script( string $handle, array $data ): void {
+
+		$this->scripts[ $handle ] = $data;
+
+	}
+
+
+	public function style( string $handle, array $data ): void {
+
+		$this->styles[ $handle ] = $data;
+
+	}
+
+
+	public function init(): void {
 
 		global $wp_scripts, $wp_styles;
 
@@ -49,74 +72,31 @@ class CustomData {
 			$type = get_class( $dependencies );
 			$type = strtolower( substr( $type, 3 ) );
 
-			$attributes = array_merge( self::ATTRIBUTES['common'], self::ATTRIBUTES[ $type ] );
-
 			foreach ( $dependencies->registered as $dependency ) {
-				$specified = array_intersect( array_keys( $dependency->extra ), $attributes );
+				$specified = ( 'scripts' === $type ? ScriptsTag::filter_attributes( $dependency->extra ) : StylesTag::filter_attributes( $dependency->extra ) );
 
 				if ( ! empty( $specified ) ) {
-					foreach ( $specified as $attribute ) {
-						$this->{$type}[ $dependency->handle ][ $attribute ] = $dependency->extra[ $attribute ];
-					}
+					$this->{$type}[ $dependency->handle ] = $specified;
 				}
 			}
 		}
 
+	}
+
+
+	public function action(): void {
+
 		if ( ! empty( $this->scripts ) ) {
-			add_filter( 'script_loader_tag', array( $this, 'script' ), 10, 2 );
+			$script_tag = new ScriptsTag( $this->scripts );
+
+			add_filter( 'script_loader_tag', array( $script_tag, 'filter' ), 10, 2 );
 		}
 
 		if ( ! empty( $this->styles ) ) {
-			add_filter( 'style_loader_tag', array( $this, 'style' ), 10, 2 );
+			$style_tag = new StylesTag( $this->styles );
+
+			add_filter( 'style_loader_tag', array( $style_tag, 'filter' ), 10, 2 );
 		}
-
-	}
-
-
-	public function script( string $tag, string $handle ): string {
-
-		if ( array_key_exists( $handle, $this->scripts ) ) {
-			$string = $this->stringify( $this->scripts[ $handle ] );
-
-			return str_replace( ' src', "$string src", $tag );
-		}
-
-		return $tag;
-
-	}
-
-
-	public function style( string $tag, string $handle ): string {
-
-		if ( array_key_exists( $handle, $this->styles ) ) {
-			$string = $this->stringify( $this->styles[ $handle ] );
-
-			return str_replace( ' href=', "$string href=", $tag );
-		}
-
-		return $tag;
-
-	}
-
-
-	private function stringify( array $attributes ): string {
-
-		$string = '';
-
-		foreach ( array_filter( $attributes ) as $attr => $value ) {
-			if ( is_array( $value ) ) {
-				$value = $value[0];
-			}
-
-			if ( is_bool( $value ) ) {
-				$string .= " $attr";
-			} elseif ( ! is_array( $value ) ) {
-				$value   = esc_attr( $value );
-				$string .= " $attr='$value'";
-			}
-		}
-
-		return $string;
 
 	}
 

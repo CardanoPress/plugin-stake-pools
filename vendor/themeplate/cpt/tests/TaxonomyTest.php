@@ -38,6 +38,25 @@ class TaxonomyTest extends WP_UnitTestCase {
 		$this->assertFalse( $tax->rewrite['with_front'] );
 	}
 
+	public function test_defaults_applied(): void {
+		$name = 'test';
+		$tax  = new Taxonomy( $name );
+
+		$tax->register();
+
+		$object = get_taxonomy( $name );
+
+		foreach ( $tax->defaults() as $key => $value ) {
+			$this->assertObjectHasAttribute( $key, $object );
+
+			if ( is_array( $value ) ) {
+				continue;
+			}
+
+			$this->assertSame( $value, $object->$key );
+		}
+	}
+
 	public function test_late_post_type_association(): void {
 		( new Taxonomy( 'test' ) )->associate( 'this' )->register();
 
@@ -90,6 +109,17 @@ class TaxonomyTest extends WP_UnitTestCase {
 
 		$this->assertNotSame( strtolower( $type->label ), $type->rewrite['slug'] );
 		$this->assertSame( $args['rewrite']['slug'], $type->rewrite['slug'] );
+	}
+
+	public function test_rewrite_if_non_public(): void {
+		$name = 'test';
+		$args = array( 'public' => false );
+
+		( new Taxonomy( $name, $args ) )->labels( 'Want', 'Wants' )->register();
+
+		$type = get_taxonomy( $name );
+
+		$this->assertFalse( $type->rewrite );
 	}
 
 	public function test_for_messages_filter(): void {
