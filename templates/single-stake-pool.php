@@ -32,6 +32,7 @@ get_header();
                     <?php cpStakePools()->template('delegation', compact('poolHex')); ?>
                 </h2>
 
+                <?php the_content(); ?>
                 <pre><?php print_r($fullData); ?></pre>
             <?php endwhile; ?>
         </div>
