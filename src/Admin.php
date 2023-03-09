@@ -41,7 +41,7 @@ class Admin extends AbstractAdmin
         $postType = new PostType('stake-pool', [
             'menu_position' => 5,
             'menu_icon' => 'dashicons-database',
-            'supports' => ['title'],
+            'supports' => ['title', 'editor'],
             'has_archive' => true,
         ]);
 
