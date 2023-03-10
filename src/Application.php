@@ -50,6 +50,7 @@ class Application extends AbstractApplication
 
     public function init(): void
     {
+        (new Shortcode())->setupHooks();
     }
 
     public function isReady(): bool
