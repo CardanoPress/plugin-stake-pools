@@ -26,12 +26,12 @@ class Shortcode implements HookInterface
     public function doData(array $attributes): string
     {
         $args = shortcode_atts([
-            'id' => '',
             'key' => '',
+            'id' => '',
         ], $attributes);
 
         if (empty($args['id'])) {
-            return '';
+            $args['id'] = get_the_ID();
         }
 
         $pool = $this->application->getPoolData($args['id']);
