@@ -20,8 +20,20 @@ class Shortcode implements HookInterface
 
     public function setupHooks(): void
     {
+        add_shortcode('cp-stakes-pool_component', [$this, 'doComponent']);
         add_shortcode('cp-stakes-pool_template', [$this, 'doTemplate']);
         add_shortcode('cp-stakes-pool_data', [$this, 'doData']);
+    }
+
+    public function doComponent($attributes, ?string $content = null): string
+    {
+        $html = '<div x-data="cardanoPressStakePools">';
+        $html .= apply_filters('the_content', $content);
+        $html .= '</div>';
+
+        wp_enqueue_script(Manifest::HANDLE_PREFIX . 'script');
+
+        return trim($html);
     }
 
     public function doTemplate(array $attributes): string
