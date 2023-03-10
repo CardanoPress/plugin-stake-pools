@@ -20,7 +20,36 @@ class Shortcode implements HookInterface
 
     public function setupHooks(): void
     {
+        add_shortcode('cp-stakes-pool_template', [$this, 'doTemplate']);
         add_shortcode('cp-stakes-pool', [$this, 'doData']);
+    }
+
+    public function doTemplate(array $attributes): string
+    {
+        $args = shortcode_atts([
+            'name' => '',
+            'variables' => [],
+            'if' => '',
+        ], $attributes);
+
+        if (empty($args['name'])) {
+            return '';
+        }
+
+        if (isset($attributes['variables'])) {
+            parse_str(str_replace('&amp;', '&', $args['variables']), $args['variables']);
+        }
+
+        ob_start();
+        $this->application->template($args['name'], $args['variables']);
+
+        $html = ob_get_clean();
+
+        if (empty($args['if'])) {
+            return $html;
+        }
+
+        return '<template x-if="' . $args['if'] . '">' . $html . '</template>';
     }
 
     public function doData(array $attributes): string
