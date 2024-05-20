@@ -21,7 +21,7 @@ if (empty($text)) {
 
 <button
     class="btn btn-primary"
-    @click="handleDelegation('<?php echo esc_js($poolHex); ?>')"
+    x-on:click="handleDelegation('<?php echo esc_js($poolHex); ?>')"
     x-bind:disabled="isProcessing"
 >
     <?php echo esc_html($text); ?>

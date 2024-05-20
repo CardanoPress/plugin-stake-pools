@@ -11,7 +11,7 @@
 
 $postId = get_the_ID();
 
-get_header();
+cardanoPress()->compatibleHeader();
 
 ?>
 
@@ -41,4 +41,4 @@ get_header();
 
 <?php
 
-get_footer();
+cardanoPress()->compatibleFooter();
