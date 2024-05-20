@@ -20,7 +20,8 @@
   "config": {
     "optimize-autoloader": true,
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": false
+      "dealerdirect/phpcodesniffer-composer-installer": false,
+      "phpstan/extension-installer": true
     }
   },
   "minimum-stability": "stable",
@@ -30,7 +31,8 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "coenjacobs/mozart": "^0.7.1"
+    "coenjacobs/mozart": "^0.7.1",
+    "themeplate/tester": "^2.2"
   },
   "autoload": {
     "psr-4": {
