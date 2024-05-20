@@ -8,9 +8,9 @@
 namespace PBWebDev\CardanoPress\StakePools;
 
 use CardanoPress\Foundation\AbstractAdmin;
-use ThemePlate\CPT\PostType;
-use ThemePlate\CPT\Taxonomy;
-use ThemePlate\Meta\PostMeta;
+use CardanoPress\Dependencies\ThemePlate\CPT\PostType;
+use CardanoPress\Dependencies\ThemePlate\CPT\Taxonomy;
+use CardanoPress\Dependencies\ThemePlate\Meta\PostMeta;
 
 class Admin extends AbstractAdmin
 {

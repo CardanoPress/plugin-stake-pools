@@ -12,8 +12,8 @@ use CardanoPress\Traits\Configurable;
 use CardanoPress\Traits\Enqueueable;
 use CardanoPress\Traits\Instantiable;
 use CardanoPress\Traits\Templatable;
-use ThemePlate\Cache\CacheManager;
-use ThemePlate\Process\Tasks;
+use CardanoPress\Dependencies\ThemePlate\Cache\CacheManager;
+use CardanoPress\Dependencies\ThemePlate\Process\Tasks;
 
 class Application extends AbstractApplication
 {

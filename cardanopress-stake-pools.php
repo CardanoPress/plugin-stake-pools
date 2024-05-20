@@ -31,7 +31,7 @@ if (! defined('CP_STAKE_POOLS_FILE')) {
 }
 
 // Load the main plugin class
-require_once plugin_dir_path(CP_STAKE_POOLS_FILE) . 'vendor/autoload.php';
+require_once plugin_dir_path(CP_STAKE_POOLS_FILE) . 'dependencies/vendor/autoload_packages.php';
 
 // Instantiate the updater
 EUM_Handler::run(CP_STAKE_POOLS_FILE, 'https://raw.githubusercontent.com/CardanoPress/plugin-stake-pools/main/update-data.json');
