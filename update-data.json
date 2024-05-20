@@ -1,12 +1,12 @@
 {
-  "new_version"    : "0.6.0",
+  "new_version"    : "0.7.0",
   "homepage"       : "https://github.com/CardanoPress/plugin-stake-pools",
-  "download_link"  : "https://github.com/CardanoPress/plugin-stake-pools/archive/refs/tags/v0.6.0.zip",
-  "last_updated"   : "2023-03-10",
+  "download_link"  : "https://github.com/CardanoPress/plugin-stake-pools/archive/refs/tags/v0.7.0.zip",
+  "last_updated"   : "2024-05-20",
   "author"         : "Gene Alyson Fortunado Torcende",
   "author_profile" : "https://cardanopress.io",
-  "requires"       : "5.8.0",
-  "tested"         : "6.1.1",
+  "requires"       : "5.9.0",
+  "tested"         : "6.5.99",
   "requires_php"   : "7.4",
   "sections"       : {
     "description"  : "<p>A CardanoPress extension for stake pools.</p>"
