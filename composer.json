@@ -20,7 +20,7 @@
   "config": {
     "optimize-autoloader": true,
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": false,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
       "phpstan/extension-installer": true
     }
   },
