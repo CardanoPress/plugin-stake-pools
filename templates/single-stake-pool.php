@@ -15,7 +15,7 @@ cardanoPress()->compatibleHeader();
 
 ?>
 
-<div id="stake-pool-<?php echo esc_attr($postId); ?>" class="py-5">
+<div id="stake-pool-<?php echo esc_attr((string) $postId); ?>" class="py-5">
     <div class="container">
         <div x-data="cardanoPressStakePools">
             <?php while (have_posts()) : ?>
