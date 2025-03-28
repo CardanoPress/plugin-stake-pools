@@ -7,9 +7,9 @@
 
 namespace PBWebDev\CardanoPress\StakePools;
 
-use CardanoPress\Interfaces\HookInterface;
+use CardanoPress\Foundation\AbstractShortcode;
 
-class Shortcode implements HookInterface
+class Shortcode extends AbstractShortcode
 {
     protected Application $application;
 
@@ -79,21 +79,5 @@ class Shortcode implements HookInterface
         $value = $pool->toArray();
 
         return $this->printOutput($value, $args['key']);
-    }
-
-    private function printOutput($value, string $sub = '')
-    {
-        if (is_array($value)) {
-            $value = empty($sub) ? $value : $value[$sub] ?? '';
-
-            return $this->getString($value);
-        }
-
-        return $value;
-    }
-
-    private function getString($value): string
-    {
-        return is_array($value) ? json_encode($value) : $value;
     }
 }
